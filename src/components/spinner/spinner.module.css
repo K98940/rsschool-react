@@ -1,0 +1,27 @@
+.spinner {
+  display: flex;
+  position: fixed;
+  width: 100vw;
+  height: 100dvh;
+
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.spinnerImg {
+  animation-name: spinner;
+  animation-duration: 2s;
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation-iteration-count: infinite;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

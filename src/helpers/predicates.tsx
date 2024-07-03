@@ -1,41 +1,5 @@
-type ResponsePage = {
-  pageNumber: number;
-  pageSize: number;
-  numberOfElements: number;
-  totalElements: number;
-  totalPages: number;
-  firstPage: boolean;
-  lastPage: boolean;
-};
-
-type ResponseSortClause = {
-  name: string;
-  direction: 'ASC' | 'DESC';
-  clauseOrder: number;
-};
-
-type ResponseSort = {
-  clauses: ResponseSortClause[];
-};
-
-export type AnimalBase = {
-  uid: string;
-  name: string;
-  earthAnimal: boolean;
-  earthInsect: boolean;
-  avian: boolean;
-  canine: boolean;
-  feline: boolean;
-};
-
-export type AnimalBaseResponse = {
-  page: ResponsePage;
-  sort: ResponseSort;
-  animals: AnimalBase[];
-};
-
-const ResponseKeys = ['headers', 'ok', 'status', 'statusText', 'type', 'url', 'redirected'];
-const AnimalBaseResponseKeys = ['page', 'sort', 'animals'];
+import { AnimalBaseResponse } from '@/types/types';
+import { ResponseKeys, AnimalBaseResponseKeys } from './constants';
 
 export function isResponse(data: unknown | Response): data is Response {
   if (typeof data !== 'object') return false;

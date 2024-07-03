@@ -1,9 +1,7 @@
-import classes from './header.module.css';
 import { Component, ReactNode } from 'react';
-import { Status } from '@components/state/state';
+import classes from './header.module.css';
+import { Status, SubmitEvents } from '@/types/types';
 import DamageButton from '../damageButton/damageButton';
-
-export type SubmitEvents = React.MouseEvent | React.FormEvent;
 
 type HeaderProps = {
   status: Status;

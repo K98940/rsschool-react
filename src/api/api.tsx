@@ -1,10 +1,6 @@
+import { AnimalBaseResponse } from '@/types/types';
 import responseToJSON from '@/helpers/responseToJSON';
-import { AnimalBaseResponse } from '@/helpers/predicates';
-
-const BASE_URL = 'https://stapi.co/api';
-const paths = {
-  animal: '/v1/rest/animal/search',
-};
+import { BASE_URL, paths } from '@/helpers/constants';
 
 export default class Api {
   async searchAnimal(term: string, page: number = 0) {

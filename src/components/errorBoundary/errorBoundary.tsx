@@ -6,16 +6,12 @@ type ErrorBoundaryProps = {
   children?: ReactNode;
 };
 
-type State = {
-  hasError: boolean;
-};
-
 export default class ErrorBoundary extends Component<ErrorBoundaryProps> {
-  state: State = {
+  state = {
     hasError: false,
   };
 
-  static getDerivedStateFromError(): State {
+  static getDerivedStateFromError() {
     console.log('Something terrible has happened. We should do something!');
     return { hasError: true };
   }

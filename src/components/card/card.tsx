@@ -1,8 +1,8 @@
 import classes from './card.module.css';
+import { AnimalBase } from '@/types/types';
 import { Component, ReactNode } from 'react';
-import { AnimalBase } from '@/helpers/predicates';
 
-type CardProps = {
+export type CardProps = {
   data: AnimalBase;
 };
 

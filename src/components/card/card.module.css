@@ -1,0 +1,47 @@
+.container {
+  container: card / inline-size;
+}
+
+.card {
+  --border-size: 1px;
+  --font-size-title: 1.2em;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.5em;
+  padding: 0.5em;
+
+  min-height: 5em;
+
+  border-block-start: var(--border-size) solid var(--border-color-light);
+  border-inline-start: var(--border-size) solid var(--border-color-light);
+  border-block-end: var(--border-size) solid var(--border-color-dark);
+  border-inline-end: var(--border-size) solid var(--border-color-dark);
+  border-radius: var(--border-radius-input);
+  box-shadow: 2px 2px 2px var(--shadow-color);
+}
+
+.cardHeader {
+  font-weight: 700;
+  font-family: var(--font-title);
+  font-size: var(--font-size-title);
+  color: var(--card-color);
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+
+  hyphens: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* white-space: nowrap; */
+  overflow-wrap: break-word;
+}
+
+@container card (width < 260px) {
+  .card {
+    --font-size-title: 1em;
+  }
+}

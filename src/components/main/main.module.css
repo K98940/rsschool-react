@@ -1,0 +1,36 @@
+.main {
+  --template-column: 1fr 1fr 1fr 1fr;
+  --row-height: 8em;
+
+  display: grid;
+  grid-template-columns: var(--template-column);
+  grid-auto-rows: var(--row-height);
+  gap: 1em;
+
+  padding: 1em;
+  border-radius: var(--border-radius-input);
+
+  flex: 1 1 auto;
+  color: black;
+}
+
+@media (width < 1025px) {
+  .main {
+    --template-column: 1fr 1fr 1fr;
+    --row-height: 9em;
+  }
+}
+
+@media (width < 769px) {
+  .main {
+    --template-column: 1fr 1fr;
+    --row-height: 10em;
+  }
+}
+
+@media (width < 501px) {
+  .main {
+    --template-column: 1fr;
+    --row-height: 11em;
+  }
+}

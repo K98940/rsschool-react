@@ -1,13 +1,12 @@
 .spinner {
-  display: flex;
+  display: grid;
   position: fixed;
   width: 100vw;
   height: 100dvh;
+  place-items: center;
 
-  justify-content: center;
-  align-items: center;
-
-  background-color: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  user-select: none;
 }
 
 .spinnerImg {

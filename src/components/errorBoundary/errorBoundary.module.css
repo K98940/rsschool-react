@@ -1,10 +1,26 @@
-.errorMessage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.boundaryContainer {
+  display: grid;
+  height: 100dvh;
+  place-items: center;
   padding: 0.5em;
 
   background-color: var(--error-color-backgroun);
   font-size: 1.2em;
   color: var(--error-color-text);
+}
+
+.header,
+.content {
+  padding: 1em;
+}
+
+.header {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1.5em;
+}
+
+.content {
+  font-family: var(--font-common);
+  font-size: 1.2em;
 }

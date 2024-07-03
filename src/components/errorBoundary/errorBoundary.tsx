@@ -1,5 +1,6 @@
 import { Component, ReactNode } from 'react';
 import classes from './errorBoundary.module.css';
+import imgBroken from '@assets/img/broken.webp';
 
 type ErrorBoundaryProps = {
   children?: ReactNode;
@@ -15,6 +16,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps> {
   };
 
   static getDerivedStateFromError(): State {
+    console.log('Something terrible has happened. We should do something!');
     return { hasError: true };
   }
 
@@ -27,8 +29,10 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps> {
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div className={classes.errorMessage}>
-          <p>Something went wrong</p>
+        <div className={classes.boundaryContainer}>
+          <h1 className={classes.header}>Something went wrong</h1>
+          <img src={imgBroken} alt="Something went wrong" />
+          <p className={classes.content}>But we'll fix it soon</p>
         </div>
       );
     }

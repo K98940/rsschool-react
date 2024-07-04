@@ -5,6 +5,7 @@
 .card {
   --border-size: 1px;
   --font-size-title: 1.2em;
+  --header-color-background: var(--input-color-background);
 
   display: flex;
   flex-direction: column;
@@ -50,12 +51,21 @@
   -webkit-line-clamp: 1;
   line-clamp: 1;
 
-  background-color: var(--input-color-background);
+  border-radius: var(--border-radius-input);
+  background-color: var(--header-color-background);
   border-block-end: var(--border-size) solid var(--border-color-light);
 }
 
 @container card (width < 260px) {
   .card {
     --font-size-title: 1em;
+  }
+}
+
+@media (hover: hover) {
+  .card:hover {
+    --header-color-background: var(--hover-color);
+    filter: brightness(1.1);
+    box-shadow: 6px 6px 6px var(--shadow-color);
   }
 }

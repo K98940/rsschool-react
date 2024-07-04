@@ -11,7 +11,9 @@ class Card extends Component<CardProps> {
     return (
       <section className={classes.container}>
         <div className={classes.card}>
-          <header className={classes.cardHeader}>{this.props.data.title}</header>
+          <header className={classes.cardHeader} title={this.props.data.title}>
+            {this.props.data.title}
+          </header>
           <div className={classes.contentContainer}>
             <p className={classes.content}>
               <strong>Season:</strong> {this.props.data.season.title}

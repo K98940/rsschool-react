@@ -1,6 +1,6 @@
 .main {
   --template-column: 1fr 1fr 1fr 1fr;
-  --row-height: 8em;
+  --row-height: 10em;
 
   display: grid;
   grid-template-columns: var(--template-column);
@@ -17,20 +17,20 @@
 @media (width < 1025px) {
   .main {
     --template-column: 1fr 1fr 1fr;
-    --row-height: 9em;
+    --row-height: 11em;
   }
 }
 
 @media (width < 769px) {
   .main {
     --template-column: 1fr 1fr;
-    --row-height: 10em;
+    --row-height: 12em;
   }
 }
 
 @media (width < 501px) {
   .main {
     --template-column: 1fr;
-    --row-height: 11em;
+    --row-height: 13em;
   }
 }

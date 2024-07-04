@@ -14,3 +14,9 @@
 
   background-color: rgb(255, 210, 210);
 }
+
+@media (hover: hover) {
+  .btnDoDamage:hover {
+    filter: saturate(3.1);
+  }
+}

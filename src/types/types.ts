@@ -1,8 +1,9 @@
 export type SubmitEvents = React.MouseEvent | React.FormEvent;
 export type Status = 'idle' | 'submitting' | 'success';
 export type AppState = {
+  query: string;
   status: Status;
-  data: AnimalBaseResponse | null;
+  data: EpisodeBaseResponse | null;
 };
 export type ResponsePage = {
   pageNumber: number;
@@ -22,18 +23,33 @@ export type ResponseSort = {
   clauses: ResponseSortClause[];
 };
 
-export type AnimalBase = {
+export type Header = {
   uid: string;
-  name: string;
-  earthAnimal: boolean;
-  earthInsect: boolean;
-  avian: boolean;
-  canine: boolean;
-  feline: boolean;
+  title: string;
 };
 
-export type AnimalBaseResponse = {
+export type EpisodeBase = {
+  uid: string;
+  title: string;
+  titleGerman: string;
+  titleItalian: string;
+  titleJapanese: string;
+  series: Header;
+  season: Header;
+  seasonNumber: number;
+  episodeNumber: number;
+  productionSerialNumber: number;
+  featureLength: number;
+  stardateFrom: number;
+  stardateTo: number;
+  yearFrom: number;
+  yearTo: number;
+  usAirDate: string;
+  finalScriptDate: string;
+};
+
+export type EpisodeBaseResponse = {
   page: ResponsePage;
   sort: ResponseSort;
-  animals: AnimalBase[];
+  episodes: EpisodeBase[];
 };

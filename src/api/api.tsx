@@ -1,17 +1,19 @@
-import { AnimalBaseResponse } from '@/types/types';
+import { ls } from '@/helpers/localStorage';
+import { EpisodeBaseResponse } from '@/types/types';
 import responseToJSON from '@/helpers/responseToJSON';
 import { BASE_URL, paths } from '@/helpers/constants';
 
 export default class Api {
-  async searchAnimal(term: string, page: number = 0) {
-    const search = `?pageNumber=${page}&pageSize=20`;
+  async searchEpisode(search: string, page: number = 0) {
+    const query = `?pageNumber=${page}&pageSize=20`;
     const option = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: `name=${term}`,
+      body: `title=${search}`,
     };
-    return await fetch(`${BASE_URL}${paths.animal}${search}`, option).then(responseToJSON<AnimalBaseResponse>);
+    ls.save(search);
+    return await fetch(`${BASE_URL}${paths.episode}${query}`, option).then(responseToJSON<EpisodeBaseResponse>);
   }
 }

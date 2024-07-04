@@ -1,11 +1,11 @@
-import { AnimalBaseResponse } from '@/types/types';
-import { ResponseKeys, AnimalBaseResponseKeys } from './constants';
+import { EpisodeBaseResponse } from '@/types/types';
+import { ResponseKeys, EpisodeBaseResponseKeys } from './constants';
 
 export function isResponse(data: unknown | Response): data is Response {
   if (typeof data !== 'object') return false;
   return ResponseKeys.every((key) => key in (data as Response));
 }
-export function isAnimalBaseResponse(data: unknown | AnimalBaseResponse): data is AnimalBaseResponse {
+export function isEpisodeBaseResponse(data: unknown | EpisodeBaseResponse): data is EpisodeBaseResponse {
   if (typeof data !== 'object') return false;
-  return AnimalBaseResponseKeys.every((key) => key in (data as AnimalBaseResponse));
+  return EpisodeBaseResponseKeys.every((key) => key in (data as EpisodeBaseResponse));
 }

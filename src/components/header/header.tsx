@@ -14,8 +14,6 @@ type HeaderProps = {
 export default class Header extends Component<HeaderProps> {
   private readonly ref = createRef<HTMLInputElement>();
 
-  // componentDidUpdate(prevProps: Readonly<HeaderProps>): void {}
-
   render(): ReactNode {
     const classSearchContainer =
       this.props.status === 'submitting'

@@ -22,12 +22,14 @@
   box-shadow: 2px 2px 2px var(--shadow-color);
 }
 
-.cardHeader {
-  font-weight: 700;
-  font-family: var(--font-title);
-  font-size: var(--font-size-title);
-  color: var(--card-color);
+.contentContainer {
+  padding: 0.5em;
+  text-align: start;
+  font-family: var(--font-common);
+}
 
+.cardHeader,
+.content {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
@@ -38,6 +40,18 @@
   text-overflow: ellipsis;
   /* white-space: nowrap; */
   overflow-wrap: break-word;
+}
+
+.cardHeader {
+  font-weight: 700;
+  font-family: var(--font-title);
+  font-size: var(--font-size-title);
+  color: var(--card-color);
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+
+  background-color: var(--input-color-background);
+  border-block-end: var(--border-size) solid var(--border-color-light);
 }
 
 @container card (width < 260px) {

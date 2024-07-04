@@ -36,7 +36,7 @@ class App extends Component {
   getData(term: string) {
     this.updateStatus('submitting');
     api
-      .searchEpisode(term)
+      .searchEpisode(term.trim())
       .then((resp) => {
         if (isEpisodeBaseResponse(resp)) {
           this.setState((prevState) => ({ ...prevState, data: resp }));

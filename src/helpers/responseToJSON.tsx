@@ -1,6 +1,9 @@
-async function responseToJSON<T>(response: Response) {
-  if (response.ok) return await response.json().then((resp) => resp as T);
-  return response as Response;
+async function responseToJSON<T>(response: Response): Promise<Response | T> {
+  if (response.ok) {
+    const data = await response.json();
+    return data as T;
+  }
+  return response;
 }
 
 export default responseToJSON;

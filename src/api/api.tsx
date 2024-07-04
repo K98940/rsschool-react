@@ -14,6 +14,7 @@ export default class Api {
       body: `title=${search}`,
     };
     ls.save(search);
-    return await fetch(`${BASE_URL}${paths.episode}${query}`, option).then(responseToJSON<EpisodeBaseResponse>);
+    const response = await fetch(`${BASE_URL}${paths.episode}${query}`, option);
+    return responseToJSON<EpisodeBaseResponse>(response);
   }
 }

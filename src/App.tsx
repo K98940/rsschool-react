@@ -54,6 +54,7 @@ class App extends Component {
     const localStorageData = ls.get();
     if (localStorageData) {
       this.setState((prevState) => ({ ...prevState, query: localStorageData }));
+      this.getData(localStorageData);
     }
   }
 

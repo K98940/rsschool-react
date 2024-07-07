@@ -1,0 +1,95 @@
+.header {
+  flex: 0 0 5em;
+  padding: 1em;
+  border-block-end: 1px solid var(--border-color-light);
+}
+
+.searchContainer {
+  display: flex;
+  height: 100%;
+  gap: 0.5rem;
+  container: searchContainer / size;
+
+  font-family: var(--font-common);
+}
+
+.inputContainer {
+  --font-size: 50cqh;
+  --input-padding-button: 5px;
+
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  height: 100%;
+  gap: 5.5em;
+
+  font-size: var(--font-size);
+  font-family: inherit;
+}
+
+.input {
+  width: 100%;
+  height: 100%;
+  padding-inline-start: 0.5em;
+  padding-inline-end: 100cqh;
+
+  font-size: inherit;
+  font-family: inherit;
+  color: var(--input-color);
+  background-color: var(--input-color-background);
+
+  border-radius: var(--border-radius-input);
+  border: 2px solid var(--border-color-light);
+
+  &::placeholder {
+    opacity: 0.4;
+  }
+}
+
+.btnReset {
+  position: absolute;
+  right: 0;
+
+  height: calc(100% - var(--input-padding-button) * 2);
+  transform: translate(calc(-1 * var(--input-padding-button)), var(--input-padding-button));
+  aspect-ratio: 1/1;
+
+  opacity: 0.5;
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  user-select: none;
+
+  border-radius: var(--border-radius-input);
+  border: 2px solid var(--border-color-light);
+}
+
+.btnSearch {
+  padding-inline: 0.5em;
+
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  user-select: none;
+
+  border-radius: var(--border-radius-input);
+  border-block-start: 2px solid var(--border-color-light);
+  border-block-end: 2px solid var(--border-color-dark);
+  border-inline-start: 2px solid var(--border-color-light);
+  border-inline-end: 2px solid var(--border-color-dark);
+}
+
+.disabledElement {
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (hover: hover) {
+  .btnSearch:hover {
+    background-color: var(--hover-color);
+    cursor: pointer;
+  }
+  .btnReset:hover {
+    filter: brightness(0.8);
+  }
+}

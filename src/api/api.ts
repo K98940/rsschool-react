@@ -3,7 +3,7 @@ import { EpisodeBaseResponse } from '@/types/types';
 import responseToJSON from '@/helpers/responseToJSON';
 import { BASE_URL, paths } from '@/helpers/constants';
 
-export default class Api {
+export default {
   async searchEpisode(search: string, page: number = 0) {
     const query = `?pageNumber=${page}&pageSize=20`;
     const option = {
@@ -16,5 +16,5 @@ export default class Api {
     ls.save(search);
     const response = await fetch(`${BASE_URL}${paths.episode}${query}`, option);
     return responseToJSON<EpisodeBaseResponse>(response);
-  }
-}
+  },
+};

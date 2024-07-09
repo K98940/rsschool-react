@@ -1,6 +1,6 @@
+import { useRef } from 'react';
 import { Status } from '@/types/types';
 import classes from './header.module.css';
-import { Component, createRef, ReactNode } from 'react';
 import DamageButton from '../damageButton/damageButton';
 
 type HeaderProps = {
@@ -11,58 +11,53 @@ type HeaderProps = {
   handleQueryReset: () => void;
 };
 
-export default class Header extends Component<HeaderProps> {
-  private readonly ref = createRef<HTMLInputElement>();
+export default function Header(props: HeaderProps) {
+  const ref = useRef<HTMLInputElement>(null);
+  const classSearchContainer =
+    props.status === 'submitting' ? `${classes.searchContainer} ${classes.disabledElement}` : classes.searchContainer;
 
-  render(): ReactNode {
-    const classSearchContainer =
-      this.props.status === 'submitting'
-        ? `${classes.searchContainer} ${classes.disabledElement}`
-        : classes.searchContainer;
-
-    return (
-      <header className={classes.header}>
-        <div className={classSearchContainer}>
-          <DamageButton text="Do Damage" />
-          <form
-            className={classes.inputContainer}
-            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-              e.preventDefault();
-              this.props.handleSearch();
-            }}
-          >
-            <input
-              className={classes.input}
-              onChange={this.props.handleQueryChange}
-              value={this.props.query}
-              placeholder="Search for the Star Trek episode"
-              autoFocus
-              ref={this.ref}
-            ></input>
-            {this.props.query.length > 0 && (
-              <button
-                type="reset"
-                className={classes.btnReset}
-                onClick={() => {
-                  this.ref.current?.focus();
-                  this.props.handleQueryReset();
-                }}
-              >
-                x
-              </button>
-            )}
-          </form>
-          <button
-            className={classes.btnSearch}
-            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-              e.preventDefault();
-              this.props.handleSearch();
-            }}
-          >
-            Search
-          </button>
-        </div>
-      </header>
-    );
-  }
+  return (
+    <header className={classes.header}>
+      <div className={classSearchContainer}>
+        <DamageButton text="Do Damage" />
+        <form
+          className={classes.inputContainer}
+          onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+            props.handleSearch();
+          }}
+        >
+          <input
+            className={classes.input}
+            onChange={props.handleQueryChange}
+            value={props.query}
+            placeholder="Search for the Star Trek episode"
+            autoFocus
+            ref={ref}
+          ></input>
+          {props.query.length > 0 && (
+            <button
+              type="reset"
+              className={classes.btnReset}
+              onClick={() => {
+                ref.current?.focus();
+                props.handleQueryReset();
+              }}
+            >
+              x
+            </button>
+          )}
+        </form>
+        <button
+          className={classes.btnSearch}
+          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+            e.preventDefault();
+            props.handleSearch();
+          }}
+        >
+          Search
+        </button>
+      </div>
+    </header>
+  );
 }

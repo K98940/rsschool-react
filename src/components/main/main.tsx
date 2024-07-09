@@ -14,5 +14,5 @@ export default function Main({ episodes }: MainProps) {
         <CardEmpty />
       </main>
     );
-  return <main className={classes.main}>{episodes?.map((episode, i) => <Card data={episode} key={i} />)}</main>;
+  return <main className={classes.main}>{episodes?.map((episode, i) => <Card episode={episode} key={i} />)}</main>;
 }

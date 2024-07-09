@@ -10,15 +10,15 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "format:fix": "npx prettier . --write",
+    "format:fix": "npx prettier . --write --list-different",
     "preview": "vite preview",
     "prepare": "husky"
   },
   "lint-staged": {
     "*.{js, jsx,ts,tsx}": [
-      "eslint --quiet --fix"
+      "eslint --fix"
     ],
-    "**/*": "prettier --write --ignore-unknown"
+    "**/*": "prettier --write --ignore-unknown --list-different"
   },
   "dependencies": {
     "react": "^18.3.1",

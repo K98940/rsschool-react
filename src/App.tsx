@@ -1,82 +1,71 @@
 import './App.css';
-import Api from '@api/api';
+import api from './api/api';
+import { Status } from './types/types';
 import Main from '@components/main/main';
 import { ls } from './helpers/localStorage';
-import { Component, ReactNode } from 'react';
 import Header from '@components/header/header';
-import { AppState, Status } from './types/types';
 import Spinner from '@components/spinner/spinner';
 import { initialState } from '@/helpers/constants';
+import { useCallback, useEffect, useState } from 'react';
 import { isEpisodeBaseResponse } from '@helpers/predicates';
 import ErrorBoundary from '@components/errorBoundary/errorBoundary';
 
-const api = new Api();
+export default function App() {
+  const [state, setState] = useState(initialState);
 
-class App extends Component {
-  localStorageData: string | null = '';
-  state: AppState = initialState;
-
-  updateStatus = (newStatus: Status): void => {
-    this.setState((prevState) => ({ ...prevState, status: newStatus }));
+  const updateStatus = (newStatus: Status): void => {
+    setState((prevState) => ({ ...prevState, status: newStatus }));
   };
 
-  handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    this.setState({ ...this.state, query: e.target.value });
+  const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setState({ ...state, query: e.target.value });
   };
 
-  handleSearch = (): void => {
-    if (this.state.status === 'submitting') return;
-    this.getData(this.state.query);
+  const handleSearch = (): void => {
+    if (state.status === 'submitting') return;
+    getData(state.query);
   };
 
-  handleQueryReset = (): void => {
-    this.setState((prevState) => ({ ...prevState, query: '' }));
+  const handleQueryReset = (): void => {
+    setState((prevState) => ({ ...prevState, query: '' }));
   };
 
-  getData(term: string) {
-    this.updateStatus('submitting');
+  const getData = useCallback((term: string) => {
+    updateStatus('submitting');
     api
       .searchEpisode(term.trim())
       .then((resp) => {
         if (isEpisodeBaseResponse(resp)) {
-          this.setState((prevState) => ({ ...prevState, data: resp }));
+          setState((prevState) => ({ ...prevState, data: resp }));
         } else {
           console.log(`this is a bad response (code: ${resp.status}) `, resp.statusText);
         }
       })
       .catch(() => console.log('this is a network error'))
       .finally(() => {
-        this.updateStatus('idle');
+        updateStatus('idle');
       });
-  }
+  }, []);
 
-  componentDidMount(): void {
-    const localStorageData = ls.get();
-    if (localStorageData) {
-      this.setState((prevState) => ({ ...prevState, query: localStorageData }));
-      this.getData(localStorageData);
-    } else {
-      this.getData('');
-    }
-  }
+  useEffect(() => {
+    const term = ls.get();
+    term && setState((prevState) => ({ ...prevState, query: term }));
+    getData(term || '');
+  }, [getData]);
 
-  render(): ReactNode {
-    return (
-      <>
-        <ErrorBoundary>
-          {this.state.status === 'submitting' && <Spinner />}
-          <Header
-            query={this.state.query}
-            handleSearch={this.handleSearch}
-            handleQueryChange={this.handleQueryChange}
-            handleQueryReset={this.handleQueryReset}
-            status={this.state.status}
-          />
-          <Main data={this.state.data?.episodes} />
-        </ErrorBoundary>
-      </>
-    );
-  }
+  return (
+    <>
+      <ErrorBoundary>
+        {state.status === 'submitting' && <Spinner />}
+        <Header
+          query={state.query}
+          handleSearch={handleSearch}
+          handleQueryChange={handleQueryChange}
+          handleQueryReset={handleQueryReset}
+          status={state.status}
+        />
+        <Main episodes={state.data?.episodes} />
+      </ErrorBoundary>
+    </>
+  );
 }
-
-export default App;

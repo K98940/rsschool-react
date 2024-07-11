@@ -1,8 +1,8 @@
 import './App.css';
 import api from './api/api';
 import { Status } from './types/types';
-import Main from '@components/main/main';
 import { ls } from './helpers/localStorage';
+import { Main } from '@components/main/main';
 import Header from '@components/header/header';
 import Spinner from '@components/spinner/spinner';
 import { initialState } from '@/helpers/constants';
@@ -23,6 +23,7 @@ export default function App() {
 
   const handleSearch = (): void => {
     if (state.status === 'submitting') return;
+    window.location.href = '/';
     getData(state.query);
   };
 

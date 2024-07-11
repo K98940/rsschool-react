@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { Status } from '@/types/types';
 import classes from './header.module.css';
-import DamageButton from '../damageButton/damageButton';
 
 type HeaderProps = {
   query: string;
@@ -19,7 +18,6 @@ export default function Header(props: HeaderProps) {
   return (
     <header className={classes.header}>
       <div className={classSearchContainer}>
-        <DamageButton text="Do Damage" />
         <form
           className={classes.inputContainer}
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => {

@@ -53,3 +53,19 @@ export type EpisodeBaseResponse = {
   sort: ResponseSort;
   episodes: EpisodeBase[];
 };
+
+export type EpisodeFull = {
+  uid: string;
+  title: string;
+  series: {
+    title: string;
+  };
+  season: {
+    title: string;
+  };
+  usAirDate: string;
+};
+
+export type EpisodeFullResponse = {
+  episode: EpisodeFull;
+};

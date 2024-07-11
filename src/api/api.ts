@@ -1,7 +1,7 @@
 import { ls } from '@/helpers/localStorage';
-import { EpisodeBaseResponse } from '@/types/types';
 import responseToJSON from '@/helpers/responseToJSON';
 import { BASE_URL, paths } from '@/helpers/constants';
+import { EpisodeBaseResponse, EpisodeFullResponse } from '@/types/types';
 
 export default {
   async searchEpisode(search: string, page: number = 0) {
@@ -14,7 +14,12 @@ export default {
       body: `title=${search}`,
     };
     ls.save(search);
-    const response = await fetch(`${BASE_URL}${paths.episode}${query}`, option);
+    const response = await fetch(`${BASE_URL}${paths.episodeSearch}${query}`, option);
     return responseToJSON<EpisodeBaseResponse>(response);
+  },
+  async getEpisode(uid: string) {
+    const query = `?uid=${uid}`;
+    const response = await fetch(`${BASE_URL}${paths.episode}${query}`);
+    return responseToJSON<EpisodeFullResponse>(response);
   },
 };

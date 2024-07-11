@@ -1,4 +1,6 @@
 .container {
+  flex: 1 1 60%;
+  height: fit-content;
   container: card / inline-size;
 }
 
@@ -25,6 +27,7 @@
 
 .contentContainer {
   padding: 0.5em;
+  margin-block-end: 1em;
   text-align: start;
   font-family: var(--font-common);
 }
@@ -39,7 +42,6 @@
   hyphens: auto;
   overflow: hidden;
   text-overflow: ellipsis;
-  /* white-space: nowrap; */
   overflow-wrap: break-word;
 }
 
@@ -47,6 +49,7 @@
   font-weight: 700;
   font-family: var(--font-title);
   font-size: var(--font-size-title);
+  line-height: 2em;
   color: var(--card-color);
   -webkit-line-clamp: 1;
   line-clamp: 1;
@@ -54,6 +57,16 @@
   border-radius: var(--border-radius-input);
   background-color: var(--header-color-background);
   border-block-end: var(--border-size) solid var(--border-color-light);
+}
+
+.btnCloseCard {
+  block-size: 2em;
+  inline-size: 100%;
+
+  font-size: 1.1em;
+  font-family: inherit;
+  border-radius: var(--border-radius-input);
+  border: 1px solid var(--border-color-light);
 }
 
 @container card (width < 260px) {
@@ -64,8 +77,10 @@
 
 @media (hover: hover) {
   .card:hover {
-    --header-color-background: var(--hover-color);
-    filter: brightness(1.1);
     box-shadow: 6px 6px 6px var(--shadow-color);
+  }
+  .btnCloseCard:hover {
+    cursor: pointer;
+    filter: brightness(0.95);
   }
 }

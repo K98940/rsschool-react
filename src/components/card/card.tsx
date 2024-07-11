@@ -1,6 +1,6 @@
 import classes from './card.module.css';
 import CardEmpty from '../cardEmpty/cardEmpty';
-import { APP_ROOT_URL } from '@/helpers/constants';
+import { APP_URL_ROOT } from '@/helpers/constants';
 import { isEpisodeFullResponse } from '@/helpers/predicates';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 
@@ -28,7 +28,7 @@ export default function Card() {
               <strong>Date:</strong> {episode.usAirDate}
             </p>
           </div>
-          <button className={classes.btnCloseCard} onClick={() => navigate(APP_ROOT_URL)}>
+          <button className={classes.btnCloseCard} onClick={() => navigate(APP_URL_ROOT)}>
             Close
           </button>
         </div>

@@ -1,5 +1,6 @@
 .container {
-  max-inline-size: 10em;
+  flex: 1 1 60%;
+  block-size: fit-content;
   container: card / inline-size;
 }
 

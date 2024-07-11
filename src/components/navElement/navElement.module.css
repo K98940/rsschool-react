@@ -1,0 +1,49 @@
+.navElement {
+  --height: 3em;
+
+  font-family: var(--font-common);
+  font-size: 1.1em;
+
+  block-size: var(--height);
+  inline-size: 100%;
+  list-style-position: outside;
+  border-radius: var(--border-radius-input);
+
+  & > a {
+    display: inline-block;
+    inline-size: 100%;
+    block-size: 100%;
+    padding-inline: 1em;
+
+    color: var(--card-color);
+    text-align: start;
+    text-decoration: none;
+    font-size: 1.2em;
+    line-height: var(--height);
+
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+
+    hyphens: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+    border-radius: var(--border-radius-input);
+  }
+}
+
+.active {
+  background-color: var(--hover-color);
+}
+
+.pending {
+  background-color: var(--border-color-light);
+}
+
+@media (hover: hover) {
+  .navElement:hover {
+    background-color: color-mix(in srgb, var(--input-color-background) 95%, black 5%);
+  }
+}

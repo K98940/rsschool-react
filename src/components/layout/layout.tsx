@@ -4,13 +4,15 @@ import Header from '../header/header';
 import { Status } from '@/types/types';
 import Spinner from '../spinner/spinner';
 import { ls } from '@/helpers/localStorage';
-import { initialState } from '@/helpers/constants';
+import { useNavigate } from 'react-router-dom';
+import { APP_URL_ROOT, initialState } from '@/helpers/constants';
 import { useCallback, useEffect, useState } from 'react';
 import { isEpisodeBaseResponse } from '@/helpers/predicates';
 
 export const Layout = () => {
   const [state, setState] = useState(initialState);
   const [page, setPage] = useState(0);
+  const navigate = useNavigate();
 
   const handleChangePage = (page: number): void => {
     setPage(page);
@@ -26,7 +28,9 @@ export const Layout = () => {
 
   const handleSearch = (): void => {
     if (state.status === 'submitting') return;
+    setPage(0);
     getData(state.query);
+    navigate(APP_URL_ROOT);
   };
 
   const handleQueryReset = (): void => {

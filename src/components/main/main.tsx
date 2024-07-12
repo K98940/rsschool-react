@@ -1,64 +1,30 @@
-import {
-  Outlet,
-  useNavigate,
-  useLoaderData,
-  useNavigation,
-  LoaderFunction,
-  RouterProvider,
-  createBrowserRouter,
-} from 'react-router-dom';
-import api from '@/api/api';
-import { memo, MouseEvent } from 'react';
-import Card from '../card/card';
-import Index from '@/routes/index';
+import { Outlet, useNavigate, useNavigation } from 'react-router-dom';
 import classes from './main.module.css';
-import { EpisodeBase } from '@/types/types';
-import ErrorPage from '../errorPage/errorPage';
+import { memo, MouseEvent } from 'react';
 import CardEmpty from '../cardEmpty/cardEmpty';
 import NavElement from '../navElement/navElement';
-import { APP_URL_ROOT, APP_URL_EPISODE } from '@/helpers/constants';
+import { APP_URL_ROOT } from '@/helpers/constants';
+import { EpisodeBaseResponse } from '@/types/types';
 import EpisodeSkeleton from '../skeletones/episodesSkeleton/episodesSkeleton';
+import { Pagination } from '../pagination/pagination';
 
 type MainProps = {
-  episodes: EpisodeBase[] | undefined;
+  data: EpisodeBaseResponse | null;
+  handleChangePage: (page: number) => void;
 };
 
-export const Main = memo(({ episodes }: MainProps) => {
-  const episodesLoader: LoaderFunction = () => ({ episodes });
-  const episodeLoader: LoaderFunction = async ({ params }) => {
-    const response = await api.getEpisode(params?.episodeId || '');
-    return response;
-  };
-
-  const router = createBrowserRouter([
-    {
-      path: APP_URL_ROOT,
-      element: <Episodes />,
-      errorElement: <ErrorPage />,
-      loader: episodesLoader,
-      children: [
-        { index: true, element: <Index /> },
-        {
-          path: `${APP_URL_EPISODE}:episodeId`,
-          element: <Card />,
-          loader: episodeLoader,
-        },
-      ],
-    },
-  ]);
-
+export const Main = memo(({ data, handleChangePage }: MainProps) => {
   return (
     <main className={classes.main}>
-      <RouterProvider router={router} />
+      <Episodes data={data} handleChangePage={handleChangePage} />
     </main>
   );
 });
 
-function Episodes() {
+function Episodes({ data, handleChangePage }: MainProps) {
   const navigation = useNavigation();
   const navigate = useNavigate();
-  const { episodes } = useLoaderData() as MainProps;
-  if (episodes?.length === 0)
+  if (!data || data.episodes?.length === 0)
     return (
       <main className={classes.main}>
         <CardEmpty />
@@ -74,11 +40,18 @@ function Episodes() {
       >
         <nav className={classes.episodesNavigation}>
           <ol className={classes.navElements}>
-            {episodes?.map((episode, i) => <NavElement key={i} episode={episode} />)}
+            {data.episodes?.map((episode, i) => <NavElement key={i} episode={episode} />)}
           </ol>
+
+          {/* <button onClick={() => handleChangePage(page - 1)}> &lt; {page}</button>
+          <button onClick={() => handleChangePage(page + 1)}> &gt; {page}</button> */}
         </nav>
+        <Pagination page={data.page} handleChangePage={handleChangePage} />
       </div>
+
       {navigation.state !== 'idle' ? <EpisodeSkeleton /> : <Outlet />}
     </>
   );
 }
+// вынести кнопки в отдельный компонент пагинация
+// во время пагинации добавить спиннер

@@ -60,7 +60,7 @@
 }
 
 .btnCloseCard {
-  block-size: 2em;
+  flex: 0 0 2em;
   inline-size: 100%;
 
   font-size: 1.1em;

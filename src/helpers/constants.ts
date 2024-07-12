@@ -16,3 +16,4 @@ export const initialState: AppState = {
 };
 export const APP_URL_EPISODE = 'episode/';
 export const APP_URL_ROOT = '/rsschool-react/';
+export const PAGE_SIZE = 10;

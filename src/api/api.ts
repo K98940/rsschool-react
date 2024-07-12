@@ -1,11 +1,11 @@
 import { ls } from '@/helpers/localStorage';
 import responseToJSON from '@/helpers/responseToJSON';
-import { BASE_URL, paths } from '@/helpers/constants';
+import { BASE_URL, PAGE_SIZE, paths } from '@/helpers/constants';
 import { EpisodeBaseResponse, EpisodeFullResponse } from '@/types/types';
 
 export default {
-  async searchEpisode(search: string, page: number = 0) {
-    const query = `?pageNumber=${page}&pageSize=20`;
+  async searchEpisodes(search: string, page: number = 0) {
+    const query = `?pageNumber=${page}&pageSize=${PAGE_SIZE}`;
     const option = {
       method: 'POST',
       headers: {

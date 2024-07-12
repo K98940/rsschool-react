@@ -13,6 +13,7 @@
       "@/*": ["src/*"],
       "@api/*": ["src/api/*"],
       "@assets/*": ["src/assets/*"],
+      "@routes/*": ["src/routes/*"],
       "@helpers/*": ["src/helpers/*"],
       "@components/*": ["src/components/*"]
     },

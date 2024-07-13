@@ -3,8 +3,8 @@ import { Main } from '../main/main';
 import Header from '../header/header';
 import { Status } from '@/types/types';
 import Spinner from '../spinner/spinner';
-import { ls } from '@/helpers/localStorage';
 import { useNavigate } from 'react-router-dom';
+import useLocalStorage from '@/hooks/useLocalStorage';
 import { APP_URL_ROOT, initialState } from '@/helpers/constants';
 import { useCallback, useEffect, useState } from 'react';
 import { isEpisodeBaseResponse } from '@/helpers/predicates';
@@ -12,6 +12,7 @@ import { isEpisodeBaseResponse } from '@/helpers/predicates';
 export const Layout = () => {
   const [state, setState] = useState(initialState);
   const [page, setPage] = useState(0);
+  const [localstorage, setLocalstorage] = useLocalStorage();
   const navigate = useNavigate();
 
   const handleChangePage = (page: number): void => {
@@ -30,6 +31,7 @@ export const Layout = () => {
     if (state.status === 'submitting') return;
     setPage(0);
     getData(state.query);
+    setLocalstorage(state.query);
     navigate(APP_URL_ROOT);
   };
 
@@ -58,10 +60,9 @@ export const Layout = () => {
   );
 
   useEffect(() => {
-    const term = ls.get();
-    term && setState((prevState) => ({ ...prevState, query: term }));
-    getData(term || '');
-  }, [getData]);
+    localstorage && setState((prevState) => ({ ...prevState, query: localstorage }));
+    getData(localstorage || '');
+  }, [getData, localstorage]);
 
   return (
     <>

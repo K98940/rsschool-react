@@ -1,4 +1,3 @@
-import { ls } from '@/helpers/localStorage';
 import responseToJSON from '@/helpers/responseToJSON';
 import { BASE_URL, PAGE_SIZE, paths } from '@/helpers/constants';
 import { EpisodeBaseResponse, EpisodeFullResponse } from '@/types/types';
@@ -13,7 +12,6 @@ export default {
       },
       body: `title=${search}`,
     };
-    ls.save(search);
     const response = await fetch(`${BASE_URL}${paths.episodeSearch}${query}`, option);
     return responseToJSON<EpisodeBaseResponse>(response);
   },

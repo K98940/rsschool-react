@@ -4,7 +4,6 @@ import { EpisodeBaseResponse } from '@/types/types';
 import { render, screen, waitFor } from '@testing-library/react';
 import { createMemoryRouter, RouteObject, RouterProvider } from 'react-router-dom';
 
-const onChange = vi.fn(() => 'onChange');
 const data: EpisodeBaseResponse | null = {
   episodes: [test_episode],
   page: {
@@ -27,7 +26,7 @@ describe('Main component', () => {
     const routes: RouteObject[] = [
       {
         path: '/',
-        element: <Main data={data} handleChangePage={onChange} />,
+        element: <Main data={data} />,
         loader: () => FAKE_EVENT,
       },
     ];

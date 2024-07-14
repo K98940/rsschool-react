@@ -33,8 +33,9 @@ export default function Card() {
             className={classes.btnCloseCard}
             onClick={() => {
               const search = searchParams.get('search') || '';
+              const page = searchParams.get('page') || '';
               navigate(APP_URL_ROOT);
-              search && setSearchParams({ search });
+              setSearchParams({ search, page });
             }}
           >
             Close

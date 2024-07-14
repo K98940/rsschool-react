@@ -10,22 +10,22 @@ import { Outlet, useNavigate, useNavigation, useSearchParams } from 'react-route
 
 type MainProps = {
   data: EpisodeBaseResponse | null;
-  handleChangePage: (page: number) => void;
 };
 
-export const Main = memo(({ data, handleChangePage }: MainProps) => {
+export const Main = memo(({ data }: MainProps) => {
   return (
     <main className={classes.main}>
-      <Episodes data={data} handleChangePage={handleChangePage} />
+      <Episodes data={data} />
     </main>
   );
 });
 
-function Episodes({ data, handleChangePage }: MainProps) {
+function Episodes({ data }: MainProps) {
   const navigation = useNavigation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get('search') || '';
+  const page = searchParams.get('page') || '';
 
   if (!data || data.episodes?.length === 0)
     return (
@@ -41,16 +41,16 @@ function Episodes({ data, handleChangePage }: MainProps) {
         onClick={(e: MouseEvent) => {
           if (e.target instanceof HTMLElement && e.target.tagName === 'NAV') {
             navigate(APP_URL_ROOT);
-            search && setSearchParams({ search });
+            setSearchParams({ search, page });
           }
         }}
       >
         <nav className={classes.episodesNavigation} data-testid="episodes-nav">
           <ol className={classes.navElements}>
-            {data.episodes?.map((episode, i) => <NavElement key={i} episode={episode} search={search} />)}
+            {data.episodes?.map((episode, i) => <NavElement key={i} episode={episode} search={search} page={page} />)}
           </ol>
         </nav>
-        <Pagination page={data.page} handleChangePage={handleChangePage} />
+        <Pagination page={data.page} />
       </div>
 
       {navigation.state !== 'idle' ? <EpisodeSkeleton /> : <Outlet />}

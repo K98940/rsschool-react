@@ -11,14 +11,9 @@ import { APP_URL_ROOT, initialState } from '@/helpers/constants';
 
 export const Layout = () => {
   const [state, setState] = useState(initialState);
-  const [page, setPage] = useState(0);
   const [localstorage, setLocalstorage] = useLocalStorage();
   const [searchParams, setSearchParams] = useSearchParams('');
   const navigate = useNavigate();
-
-  const handleChangePage = (page: number): void => {
-    setPage(page);
-  };
 
   const updateStatus = (newStatus: Status): void => {
     setState((prevState) => ({ ...prevState, status: newStatus }));
@@ -30,42 +25,41 @@ export const Layout = () => {
 
   const handleSearch = (): void => {
     if (state.status === 'submitting') return;
-    setPage(0);
-    getData(state.query);
+    getData(state.query, 0);
     setLocalstorage(state.query);
 
     navigate(APP_URL_ROOT);
-    setSearchParams({ search: state.query });
+    setSearchParams({ search: state.query, page: '1' });
   };
 
   const handleQueryReset = (): void => {
     setState((prevState) => ({ ...prevState, query: '' }));
   };
 
-  const getData = useCallback(
-    (term: string) => {
-      updateStatus('submitting');
-      api
-        .searchEpisodes(term.trim(), page)
-        .then((resp) => {
-          if (isEpisodeBaseResponse(resp)) {
-            setState((prevState) => ({ ...prevState, data: resp }));
-          } else {
-            console.log(`this is a bad response (code: ${resp.status}) `, resp.statusText);
-          }
-        })
-        .catch(() => console.log('this is a network error'))
-        .finally(() => {
-          updateStatus('idle');
-        });
-    },
-    [page],
-  );
+  const getData = useCallback((term: string, page: number) => {
+    updateStatus('submitting');
+    api
+      .searchEpisodes(term.trim(), page)
+      .then((resp) => {
+        if (isEpisodeBaseResponse(resp)) {
+          setState((prevState) => ({ ...prevState, data: resp }));
+        } else {
+          console.log(`this is a bad response (code: ${resp.status}) `, resp.statusText);
+        }
+      })
+      .catch(() => console.log('this is a network error'))
+      .finally(() => {
+        updateStatus('idle');
+      });
+  }, []);
 
   useEffect(() => {
     const search = searchParams.get('search') || localstorage;
+    const pageParam = Number(searchParams.get('page') || '');
+    const page = pageParam > 0 ? pageParam - 1 : 0;
+
     setState((prevState) => ({ ...prevState, query: search }));
-    getData(search);
+    getData(search, page);
   }, [getData, localstorage, searchParams]);
 
   return (
@@ -78,7 +72,7 @@ export const Layout = () => {
         handleQueryReset={handleQueryReset}
         status={state.status}
       />
-      <Main data={state.data} handleChangePage={handleChangePage} />
+      <Main data={state.data} />
     </>
   );
 };

@@ -4,4 +4,5 @@
 
 .title {
   opacity: 0.2;
+  user-select: none;
 }

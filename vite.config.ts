@@ -5,7 +5,7 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/rsschool-react/',
+  base: '/',
   plugins: [react()],
   resolve: {
     alias: {
@@ -19,5 +19,7 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    globals: true,
+    setupFiles: 'setupTest.ts',
   },
 });

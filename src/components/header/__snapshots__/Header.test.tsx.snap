@@ -13,10 +13,13 @@ exports[`Header component > Header snapshot with empty search query 1`] = `
         >
           <form
             class="_inputContainer_503ab9"
+            data-testid="form-search"
+            role="search"
           >
             <input
               class="_input_503ab9"
               data-testid="search-input"
+              name="search"
               placeholder="Search for the Star Trek episode"
               value=""
             />
@@ -40,10 +43,13 @@ exports[`Header component > Header snapshot with empty search query 1`] = `
       >
         <form
           class="_inputContainer_503ab9"
+          data-testid="form-search"
+          role="search"
         >
           <input
             class="_input_503ab9"
             data-testid="search-input"
+            name="search"
             placeholder="Search for the Star Trek episode"
             value=""
           />
@@ -124,10 +130,13 @@ exports[`Header component > Header snapshot with provided search query 1`] = `
         >
           <form
             class="_inputContainer_503ab9"
+            data-testid="form-search"
+            role="search"
           >
             <input
               class="_input_503ab9"
               data-testid="search-input"
+              name="search"
               placeholder="Search for the Star Trek episode"
               value="test"
             />
@@ -158,10 +167,13 @@ exports[`Header component > Header snapshot with provided search query 1`] = `
       >
         <form
           class="_inputContainer_503ab9"
+          data-testid="form-search"
+          role="search"
         >
           <input
             class="_input_503ab9"
             data-testid="search-input"
+            name="search"
             placeholder="Search for the Star Trek episode"
             value="test"
           />
@@ -249,10 +261,13 @@ exports[`Header component > Header snapshot with status === "submitting" 1`] = `
         >
           <form
             class="_inputContainer_503ab9"
+            data-testid="form-search"
+            role="search"
           >
             <input
               class="_input_503ab9"
               data-testid="search-input"
+              name="search"
               placeholder="Search for the Star Trek episode"
               value=""
             />
@@ -276,10 +291,13 @@ exports[`Header component > Header snapshot with status === "submitting" 1`] = `
       >
         <form
           class="_inputContainer_503ab9"
+          data-testid="form-search"
+          role="search"
         >
           <input
             class="_input_503ab9"
             data-testid="search-input"
+            name="search"
             placeholder="Search for the Star Trek episode"
             value=""
           />

@@ -24,8 +24,11 @@ export default function Header(props: HeaderProps) {
             e.preventDefault();
             props.handleSearch();
           }}
+          role="search"
+          data-testid="form-search"
         >
           <input
+            name="search"
             data-testid="search-input"
             className={classes.input}
             onChange={props.handleQueryChange}

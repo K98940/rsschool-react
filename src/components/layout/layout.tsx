@@ -3,16 +3,17 @@ import { Main } from '../main/main';
 import Header from '../header/header';
 import { Status } from '@/types/types';
 import Spinner from '../spinner/spinner';
-import { useNavigate } from 'react-router-dom';
 import useLocalStorage from '@/hooks/useLocalStorage';
-import { APP_URL_ROOT, initialState } from '@/helpers/constants';
 import { useCallback, useEffect, useState } from 'react';
 import { isEpisodeBaseResponse } from '@/helpers/predicates';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { APP_URL_ROOT, initialState } from '@/helpers/constants';
 
 export const Layout = () => {
   const [state, setState] = useState(initialState);
   const [page, setPage] = useState(0);
   const [localstorage, setLocalstorage] = useLocalStorage();
+  const [searchParams, setSearchParams] = useSearchParams('');
   const navigate = useNavigate();
 
   const handleChangePage = (page: number): void => {
@@ -32,7 +33,9 @@ export const Layout = () => {
     setPage(0);
     getData(state.query);
     setLocalstorage(state.query);
+
     navigate(APP_URL_ROOT);
+    setSearchParams({ search: state.query });
   };
 
   const handleQueryReset = (): void => {
@@ -60,9 +63,10 @@ export const Layout = () => {
   );
 
   useEffect(() => {
-    localstorage && setState((prevState) => ({ ...prevState, query: localstorage }));
-    getData(localstorage || '');
-  }, [getData, localstorage]);
+    const search = searchParams.get('search') || localstorage;
+    setState((prevState) => ({ ...prevState, query: search }));
+    getData(search);
+  }, [getData, localstorage, searchParams]);
 
   return (
     <>

@@ -5,13 +5,17 @@ import { APP_URL_EPISODE } from '@/helpers/constants';
 
 type NavElementProps = {
   episode: EpisodeBase;
+  search: string;
 };
-export default function NavElement({ episode }: NavElementProps) {
+export default function NavElement({ episode, search }: NavElementProps) {
   return (
     <li className={classes.navElement}>
       {
         <NavLink
-          to={`${APP_URL_EPISODE}${episode.uid}`}
+          to={{
+            pathname: `${APP_URL_EPISODE}${episode.uid}`,
+            search: search ? `?search=${search}` : '',
+          }}
           className={({ isActive, isPending }) => (isActive ? classes.active : isPending ? classes.pending : '')}
         >
           {episode.title}

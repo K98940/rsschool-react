@@ -5,8 +5,8 @@ import NavElement from '../navElement/navElement';
 import { APP_URL_ROOT } from '@/helpers/constants';
 import { EpisodeBaseResponse } from '@/types/types';
 import { Pagination } from '../pagination/pagination';
-import { Outlet, useNavigate, useNavigation } from 'react-router-dom';
 import EpisodeSkeleton from '../skeletones/episodesSkeleton/episodesSkeleton';
+import { Outlet, useNavigate, useNavigation, useSearchParams } from 'react-router-dom';
 
 type MainProps = {
   data: EpisodeBaseResponse | null;
@@ -24,6 +24,9 @@ export const Main = memo(({ data, handleChangePage }: MainProps) => {
 function Episodes({ data, handleChangePage }: MainProps) {
   const navigation = useNavigation();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get('search') || '';
+
   if (!data || data.episodes?.length === 0)
     return (
       <main className={classes.main}>
@@ -36,12 +39,15 @@ function Episodes({ data, handleChangePage }: MainProps) {
         className={classes.episodeDetail}
         data-testid="episodes"
         onClick={(e: MouseEvent) => {
-          if (e.target instanceof HTMLElement && e.target.tagName === 'NAV') navigate(APP_URL_ROOT);
+          if (e.target instanceof HTMLElement && e.target.tagName === 'NAV') {
+            navigate(APP_URL_ROOT);
+            search && setSearchParams({ search });
+          }
         }}
       >
         <nav className={classes.episodesNavigation} data-testid="episodes-nav">
           <ol className={classes.navElements}>
-            {data.episodes?.map((episode, i) => <NavElement key={i} episode={episode} />)}
+            {data.episodes?.map((episode, i) => <NavElement key={i} episode={episode} search={search} />)}
           </ol>
         </nav>
         <Pagination page={data.page} handleChangePage={handleChangePage} />

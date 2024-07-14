@@ -1,0 +1,8 @@
+.container {
+  flex: 1 1 60%;
+}
+
+.title {
+  opacity: 0.2;
+  user-select: none;
+}

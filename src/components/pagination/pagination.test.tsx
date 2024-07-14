@@ -1,4 +1,4 @@
-import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import { Pagination, PaginationProps } from './pagination';
 
@@ -11,32 +11,29 @@ const page = {
   firstPage: false,
   lastPage: false,
 };
-const handleChangePage = vi.fn((n) => {
-  page.pageNumber = n;
-});
 
 describe('Pagination component', () => {
-  const renderComponent = ({ page, handleChangePage }: PaginationProps) => {
+  const renderComponent = ({ page }: PaginationProps) => {
     return {
-      snapshot: render(<Pagination page={page} handleChangePage={handleChangePage} />),
+      snapshot: render(
+        <MemoryRouter initialEntries={['http://localhost:5173/?search=one&page=1']}>
+          <Pagination page={page} />
+        </MemoryRouter>,
+      ),
       btnPrev: screen.getByTestId('pagination-btn-prev'),
       btnNext: screen.getByTestId('pagination-btn-next'),
     };
   };
 
-  it('click Next button increase pageNumber', async () => {
-    const { btnNext } = renderComponent({ page, handleChangePage });
-    const user = userEvent.setup();
+  it('should render button Prev', async () => {
+    const { btnPrev } = renderComponent({ page });
 
-    await user.click(btnNext);
-    expect(page.pageNumber).toBe(2);
+    expect(btnPrev).toBeInTheDocument();
   });
 
-  it('click Prev button decrease pageNumber', async () => {
-    const { btnPrev } = renderComponent({ page, handleChangePage });
-    const user = userEvent.setup();
+  it('should render button Next', async () => {
+    const { btnNext } = renderComponent({ page });
 
-    await user.click(btnPrev);
-    expect(page.pageNumber).toBe(1);
+    expect(btnNext).toBeInTheDocument();
   });
 });

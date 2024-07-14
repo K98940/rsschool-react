@@ -28,6 +28,10 @@
   border: 1px solid var(--border-color-light);
 }
 
+.arrow:disabled {
+  pointer-events: none;
+}
+
 .arrow {
   cursor: pointer;
 }

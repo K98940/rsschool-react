@@ -1,12 +1,12 @@
-import { Outlet, useNavigate, useNavigation } from 'react-router-dom';
 import classes from './main.module.css';
 import { memo, MouseEvent } from 'react';
 import CardEmpty from '../cardEmpty/cardEmpty';
 import NavElement from '../navElement/navElement';
 import { APP_URL_ROOT } from '@/helpers/constants';
 import { EpisodeBaseResponse } from '@/types/types';
-import EpisodeSkeleton from '../skeletones/episodesSkeleton/episodesSkeleton';
 import { Pagination } from '../pagination/pagination';
+import { Outlet, useNavigate, useNavigation } from 'react-router-dom';
+import EpisodeSkeleton from '../skeletones/episodesSkeleton/episodesSkeleton';
 
 type MainProps = {
   data: EpisodeBaseResponse | null;
@@ -34,17 +34,15 @@ function Episodes({ data, handleChangePage }: MainProps) {
     <>
       <div
         className={classes.episodeDetail}
+        data-testid="episodes"
         onClick={(e: MouseEvent) => {
           if (e.target instanceof HTMLElement && e.target.tagName === 'NAV') navigate(APP_URL_ROOT);
         }}
       >
-        <nav className={classes.episodesNavigation}>
+        <nav className={classes.episodesNavigation} data-testid="episodes-nav">
           <ol className={classes.navElements}>
             {data.episodes?.map((episode, i) => <NavElement key={i} episode={episode} />)}
           </ol>
-
-          {/* <button onClick={() => handleChangePage(page - 1)}> &lt; {page}</button>
-          <button onClick={() => handleChangePage(page + 1)}> &gt; {page}</button> */}
         </nav>
         <Pagination page={data.page} handleChangePage={handleChangePage} />
       </div>
@@ -53,5 +51,3 @@ function Episodes({ data, handleChangePage }: MainProps) {
     </>
   );
 }
-// вынести кнопки в отдельный компонент пагинация
-// во время пагинации добавить спиннер

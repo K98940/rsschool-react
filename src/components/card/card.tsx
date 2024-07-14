@@ -8,7 +8,7 @@ export default function Card() {
   const data = useLoaderData();
   const navigate = useNavigate();
 
-  if (isEpisodeFullResponse(data)) {
+  if (data && isEpisodeFullResponse(data)) {
     const { episode } = data;
     if (!episode) return <CardEmpty />;
     return (
@@ -18,13 +18,13 @@ export default function Card() {
             {episode.title}
           </header>
           <div className={classes.contentContainer}>
-            <p className={classes.content}>
+            <p className={classes.content} data-testid="card-season">
               <strong>Season:</strong> {episode.season.title}
             </p>
-            <p className={classes.content}>
+            <p className={classes.content} data-testid="card-series">
               <strong>Series:</strong> {episode.series.title}
             </p>
-            <p className={classes.content}>
+            <p className={classes.content} data-testid="card-date">
               <strong>Date:</strong> {episode.usAirDate}
             </p>
           </div>
@@ -35,4 +35,5 @@ export default function Card() {
       </section>
     );
   }
+  return <CardEmpty />;
 }

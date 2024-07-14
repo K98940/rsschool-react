@@ -26,6 +26,7 @@ export default function Header(props: HeaderProps) {
           }}
         >
           <input
+            data-testid="search-input"
             className={classes.input}
             onChange={props.handleQueryChange}
             value={props.query}
@@ -35,6 +36,7 @@ export default function Header(props: HeaderProps) {
           ></input>
           {props.query.length > 0 && (
             <button
+              data-testid="reset-btn"
               type="reset"
               className={classes.btnReset}
               onClick={() => {
@@ -47,6 +49,7 @@ export default function Header(props: HeaderProps) {
           )}
         </form>
         <button
+          data-testid="search-btn"
           className={classes.btnSearch}
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();

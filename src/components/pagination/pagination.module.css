@@ -25,11 +25,12 @@
   padding-block: var(--button-padding-block);
   padding-inline: var(--button-padding-inline);
   border-radius: var(--button-border-radius);
-  border: 1px solid var(--border-color-light);
+  border: 1px solid rgb(var(--border-color-light));
 }
 
 .arrow:disabled {
   pointer-events: none;
+  border: 1px solid rgb(var(--border-color-dark));
 }
 
 .arrow {

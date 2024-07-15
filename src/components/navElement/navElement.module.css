@@ -15,7 +15,7 @@
     block-size: 100%;
     padding-inline: 1em;
 
-    color: var(--card-color);
+    color: rgb(var(--card-color));
     text-align: start;
     text-decoration: none;
     font-size: 1.2em;
@@ -35,15 +35,15 @@
 }
 
 .active {
-  background-color: var(--hover-color);
+  background-color: rgb(var(--hover-color));
 }
 
 .pending {
-  background-color: var(--border-color-light);
+  background-color: rgb(var(--border-color-light));
 }
 
 @media (hover: hover) {
   .navElement:hover {
-    background-color: color-mix(in srgb, var(--input-color-background) 95%, black 5%);
+    background-color: color-mix(in srgb, rgb(var(--input-color-background)) 95%, black 5%);
   }
 }

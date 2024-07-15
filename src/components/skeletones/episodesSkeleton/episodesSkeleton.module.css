@@ -6,19 +6,19 @@
 .mockСard {
   --border-size: 1px;
   --font-size-title: 1.2em;
-  --header-color-background: var(--input-color-background);
+  --header-color-background: rgb(var(--input-color-background));
 
   display: flex;
   flex-direction: column;
   gap: 0.5em;
   padding: 0.5em;
 
-  border-block-start: var(--border-size) solid var(--border-color-light);
-  border-inline-start: var(--border-size) solid var(--border-color-light);
-  border-block-end: var(--border-size) solid var(--border-color-dark);
-  border-inline-end: var(--border-size) solid var(--border-color-dark);
+  border-block-start: var(--border-size) solid rgb(var(--border-color-light));
+  border-inline-start: var(--border-size) solid rgb(var(--border-color-light));
+  border-block-end: var(--border-size) solid rgb(var(--border-color-dark));
+  border-inline-end: var(--border-size) solid rgb(var(--border-color-dark));
   border-radius: var(--border-radius-input);
-  box-shadow: 2px 2px 2px var(--shadow-color);
+  box-shadow: 2px 2px 2px rgba(var(--shadow-color));
 }
 
 .mockСontentContainer {
@@ -29,13 +29,13 @@
   font-weight: 700;
   font-family: var(--font-title);
   font-size: var(--font-size-title);
-  color: var(--card-color);
+  color: rgb(var(--card-color));
   -webkit-line-clamp: 1;
   line-clamp: 1;
 
   border-radius: var(--border-radius-input);
   background-color: var(--header-color-background);
-  border-block-end: var(--border-size) solid var(--border-color-light);
+  border-block-end: var(--border-size) solid rgb(var(--border-color-light));
 }
 
 .mockСontent {
@@ -43,12 +43,12 @@
   height: 1.5em;
   margin-block-end: 0.5em;
   border-radius: var(--border-radius-input);
-  background-color: var(--border-color-light);
+  background-color: rgb(var(--border-color-light));
 }
 
 .animation {
   opacity: 0.5;
-  background: linear-gradient(325deg, white, var(--border-color-light));
+  background: linear-gradient(325deg, white, rgb(var(--border-color-light)));
   background-size: 400% 400%;
   animation: skeletonAnimation 2s infinite;
   animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);

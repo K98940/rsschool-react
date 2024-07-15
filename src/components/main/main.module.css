@@ -19,7 +19,7 @@
   overflow-x: hidden;
 
   border-radius: var(--border-radius-input);
-  background-color: var(--input-color-background);
+  background-color: rgb(var(--input-color-background));
 
   &::-webkit-scrollbar {
     width: 7px;

@@ -7,3 +7,19 @@
   margin: 0 auto;
   text-align: center;
 }
+
+.button {
+  flex: 0 0 auto;
+  padding-inline: 0.5em;
+
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  user-select: none;
+
+  border-radius: var(--border-radius-input);
+  border-block-start: 2px solid rgb(var(--border-color-light));
+  border-block-end: 2px solid rgb(var(--border-color-dark));
+  border-inline-start: 2px solid rgb(var(--border-color-light));
+  border-inline-end: 2px solid rgb(var(--border-color-dark));
+}

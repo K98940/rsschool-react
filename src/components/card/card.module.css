@@ -7,22 +7,28 @@
 .card {
   --border-size: 1px;
   --font-size-title: 1.2em;
-  --header-color-background: var(--input-color-background);
+  --header-color-background: rgb(var(--input-color-background));
 
   display: flex;
   flex-direction: column;
   height: 100%;
   gap: 0.5em;
   padding: 0.5em;
-
   min-height: 5em;
 
-  border-block-start: var(--border-size) solid var(--border-color-light);
-  border-inline-start: var(--border-size) solid var(--border-color-light);
-  border-block-end: var(--border-size) solid var(--border-color-dark);
-  border-inline-end: var(--border-size) solid var(--border-color-dark);
+  color: rgb(var(--card-color));
+
+  border-block-start: var(--border-size) solid rgb(var(--border-color-light));
+  border-inline-start: var(--border-size) solid rgb(var(--border-color-light));
+  border-block-end: var(--border-size) solid rgb(var(--border-color-dark));
+  border-inline-end: var(--border-size) solid rgb(var(--border-color-dark));
   border-radius: var(--border-radius-input);
-  box-shadow: 2px 2px 2px var(--shadow-color);
+  box-shadow: 2px 2px 2px rgba(var(--shadow-color));
+
+  & ::selection {
+    color: rgb(0, 0, 0);
+    background-color: rgb(var(--background-color-selection));
+  }
 }
 
 .contentContainer {
@@ -50,13 +56,13 @@
   font-family: var(--font-title);
   font-size: var(--font-size-title);
   line-height: 2em;
-  color: var(--card-color);
+  color: rgb(var(--card-color));
   -webkit-line-clamp: 1;
   line-clamp: 1;
 
   border-radius: var(--border-radius-input);
-  background-color: var(--header-color-background);
-  border-block-end: var(--border-size) solid var(--border-color-light);
+  background-color: rgb(var(--input-color-background));
+  border-block-end: var(--border-size) solid rgb(var(--border-color-light));
 }
 
 .btnCloseCard {
@@ -66,7 +72,8 @@
   font-size: 1.1em;
   font-family: inherit;
   border-radius: var(--border-radius-input);
-  border: 1px solid var(--border-color-light);
+  border: 1px solid rgb(var(--border-color-light));
+  background-color: rgb(var(--border-color-light));
 }
 
 @container card (width < 260px) {
@@ -77,7 +84,7 @@
 
 @media (hover: hover) {
   .card:hover {
-    box-shadow: 6px 6px 6px var(--shadow-color);
+    box-shadow: 6px 6px 6px rgba(var(--shadow-color));
   }
   .btnCloseCard:hover {
     cursor: pointer;

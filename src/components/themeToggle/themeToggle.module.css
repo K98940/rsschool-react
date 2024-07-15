@@ -1,0 +1,21 @@
+.buttonThemeToggle {
+  height: 80%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+
+  background-image: url('../../assets/icons/theme-sun.webp');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 70%;
+}
+
+.buttonDarkMode {
+  background-image: url('../../assets/icons/theme-moon.webp');
+  filter: brightness(0.9);
+}
+
+@media (hover: hover) {
+  .buttonThemeToggle:hover {
+    filter: brightness(1.1);
+  }
+}

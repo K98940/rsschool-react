@@ -1,6 +1,8 @@
-import { useRef } from 'react';
 import { Status } from '@/types/types';
 import classes from './header.module.css';
+import { useContext, useRef } from 'react';
+import { themeContext } from '@/context/themeContext';
+import { ThemeToggle } from '../themeToggle/themeToggle';
 
 type HeaderProps = {
   query: string;
@@ -11,12 +13,13 @@ type HeaderProps = {
 };
 
 export default function Header(props: HeaderProps) {
+  const { theme } = useContext(themeContext);
   const ref = useRef<HTMLInputElement>(null);
   const classSearchContainer =
     props.status === 'submitting' ? `${classes.searchContainer} ${classes.disabledElement}` : classes.searchContainer;
 
   return (
-    <header className={classes.header}>
+    <header className={classes.header} data-theme={theme}>
       <div className={classSearchContainer}>
         <form
           className={classes.inputContainer}
@@ -53,7 +56,7 @@ export default function Header(props: HeaderProps) {
         </form>
         <button
           data-testid="search-btn"
-          className={classes.btnSearch}
+          className={`button ${classes.btnSearch}`}
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
             props.handleSearch();
@@ -61,6 +64,7 @@ export default function Header(props: HeaderProps) {
         >
           Search
         </button>
+        <ThemeToggle />
       </div>
     </header>
   );

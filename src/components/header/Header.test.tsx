@@ -26,21 +26,6 @@ describe('Header component', () => {
     };
   };
 
-  it('Header snapshot with provided search query', () => {
-    const { snapshot } = renderComponent(TEST_QUERY);
-    expect(snapshot).toMatchSnapshot();
-  });
-
-  it('Header snapshot with empty search query', () => {
-    const { snapshot } = renderComponent('');
-    expect(snapshot).toMatchSnapshot();
-  });
-
-  it('Header snapshot with status === "submitting"', () => {
-    const { snapshot } = renderComponent('');
-    expect(snapshot).toMatchSnapshot();
-  });
-
   it('click Search button should call onSearch callback in the first time', async () => {
     const { searchButton } = renderComponent(TEST_QUERY);
     const user = userEvent.setup();

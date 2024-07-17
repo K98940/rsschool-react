@@ -5,10 +5,11 @@ import { Status } from '@/types/types';
 import Spinner from '../spinner/spinner';
 import { useDispatch } from 'react-redux';
 import useLocalStorage from '@/hooks/useLocalStorage';
-import { update } from '../pagination/paginationSlice';
 import { useCallback, useEffect, useState } from 'react';
+import { updateEpisodes } from '../episodes/episodesSlice';
 import { isEpisodeBaseResponse } from '@/helpers/predicates';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { updatePagination } from '../pagination/paginationSlice';
 import { APP_URL_ROOT, initialState } from '@/helpers/constants';
 
 export const Layout = () => {
@@ -46,8 +47,9 @@ export const Layout = () => {
         .searchEpisodes(term.trim(), page)
         .then((resp) => {
           if (isEpisodeBaseResponse(resp)) {
+            dispatch(updatePagination(resp.page));
+            dispatch(updateEpisodes(resp.episodes));
             setState((prevState) => ({ ...prevState, data: resp.episodes }));
-            dispatch(update(resp.page));
           } else {
             console.log(`this is a bad response (code: ${resp.status}) `, resp.statusText);
           }
@@ -79,7 +81,7 @@ export const Layout = () => {
         handleQueryReset={handleQueryReset}
         status={state.status}
       />
-      <Main data={state.data} />
+      <Main />
     </>
   );
 };

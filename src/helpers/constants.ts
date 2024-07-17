@@ -12,7 +12,6 @@ export const localStorageKey = 'K1vjGYuKHzp4ZI9Xsrgq';
 export const initialState: AppState = {
   query: '',
   status: 'idle',
-  data: null,
 };
 export const APP_URL_EPISODE = 'episode/';
 export const APP_URL_ROOT = '/';

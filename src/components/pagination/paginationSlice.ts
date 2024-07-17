@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
 import { initialPagination } from '@/helpers/constants';
-import { PaginationPayload, Selector } from '@/types/types';
+import { createSlice, Selector } from '@reduxjs/toolkit';
+import { PaginationPayload, PaginationState } from '@/types/types';
 
 export const paginationSlice = createSlice({
   name: 'pagination',
@@ -12,13 +12,13 @@ export const paginationSlice = createSlice({
     prevPage: (state) => {
       if (!state.firstPage) state.pageNumber -= 1;
     },
-    update: (_, action: PaginationPayload) => action.payload,
+    updatePagination: (_, action: PaginationPayload) => action.payload,
   },
 });
 
-export const { nextPage, prevPage, update } = paginationSlice.actions;
 export default paginationSlice.reducer;
-export const selectLastPage: Selector<boolean> = (state) => state.pagination.lastPage;
-export const selectTotalPage: Selector<number> = (state) => state.pagination.totalPages;
-export const selectFirstPage: Selector<boolean> = (state) => state.pagination.firstPage;
-export const selectPageNumber: Selector<number> = (state) => state.pagination.pageNumber;
+export const { nextPage, prevPage, updatePagination } = paginationSlice.actions;
+export const selectLastPage: Selector<PaginationState, boolean> = (state) => state.pagination.lastPage;
+export const selectTotalPage: Selector<PaginationState, number> = (state) => state.pagination.totalPages;
+export const selectFirstPage: Selector<PaginationState, boolean> = (state) => state.pagination.firstPage;
+export const selectPageNumber: Selector<PaginationState, number> = (state) => state.pagination.pageNumber;

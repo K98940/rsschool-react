@@ -3,7 +3,6 @@ export type Status = 'idle' | 'submitting' | 'success';
 export type AppState = {
   query: string;
   status: Status;
-  data: EpisodeBase[] | null;
 };
 export type ResponsePage = {
   pageNumber: number;
@@ -73,11 +72,17 @@ export type Pagination = {
   firstPage: boolean;
   lastPage: boolean;
 };
-export type State = {
+export type PaginationState = {
   pagination: Pagination;
+};
+export type EpisodesState = {
+  episodes: EpisodeBase[];
 };
 export type PaginationPayload = {
   payload: Pagination;
   type: string;
 };
-export type Selector<T> = (state: State) => T;
+export type EpisodesPayload = {
+  payload: EpisodeBase[];
+  type: string;
+};

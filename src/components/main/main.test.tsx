@@ -1,35 +1,16 @@
 import { Main } from './main';
-import store from '../../store/store';
 import { Provider } from 'react-redux';
+import testStore from '../../store/testStore';
 import { test_episode } from '@/helpers/constants';
-import { EpisodeBaseResponse } from '@/types/types';
 import { render, screen, waitFor } from '@testing-library/react';
 import { createMemoryRouter, RouteObject, RouterProvider } from 'react-router-dom';
 
-const data: EpisodeBaseResponse | null = {
-  episodes: [test_episode],
-  page: {
-    firstPage: true,
-    lastPage: false,
-    numberOfElements: 2,
-    pageNumber: 0,
-    pageSize: 2,
-    totalElements: 2,
-    totalPages: 1,
-  },
-  sort: {
-    clauses: [],
-  },
-};
-
 describe('Main component', () => {
   it('shoud render NavElement with test data', async () => {
-    const FAKE_EVENT = { name: 'test event' };
     const routes: RouteObject[] = [
       {
         path: '/',
-        element: <Main data={data.episodes} />,
-        loader: () => FAKE_EVENT,
+        element: <Main />,
       },
     ];
     const router = createMemoryRouter(routes, {
@@ -38,7 +19,7 @@ describe('Main component', () => {
     });
 
     render(
-      <Provider store={store}>
+      <Provider store={testStore}>
         <RouterProvider router={router} />
       </Provider>,
     );

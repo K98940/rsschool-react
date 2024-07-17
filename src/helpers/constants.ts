@@ -1,4 +1,4 @@
-import { AppState, EpisodeBase } from '@/types/types';
+import { AppState, EpisodeBase, Pagination } from '@/types/types';
 
 export const ResponseKeys = ['headers', 'ok', 'status', 'statusText', 'type', 'url', 'redirected'];
 export const EpisodeBaseResponseKeys = ['page', 'sort', 'episodes'];
@@ -42,4 +42,13 @@ export const test_episode: EpisodeBase = {
   usAirDate: '',
   yearFrom: 0,
   yearTo: 0,
+};
+export const initialPagination: Pagination = {
+  pageNumber: 0,
+  pageSize: 0,
+  numberOfElements: 0,
+  totalElements: 0,
+  totalPages: 0,
+  firstPage: true,
+  lastPage: true,
 };

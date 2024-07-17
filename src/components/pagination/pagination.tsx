@@ -1,44 +1,47 @@
-import { ResponsePage } from '@/types/types';
 import classes from './pagination.module.css';
 import { useSearchParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  nextPage,
+  prevPage,
+  selectFirstPage,
+  selectLastPage,
+  selectPageNumber,
+  selectTotalPage,
+} from '@components/pagination/paginationSlice';
+import { useEffect } from 'react';
 
-export type PaginationProps = {
-  page: ResponsePage;
-};
-type Direction = 'prev' | 'next';
-
-export const Pagination = ({ page }: PaginationProps) => {
+export const Pagination = () => {
+  const dispatch = useDispatch();
+  const lastPage = useSelector(selectLastPage);
+  const firstPage = useSelector(selectFirstPage);
+  const totalPages = useSelector(selectTotalPage);
+  const pageNumber = useSelector(selectPageNumber);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleClickArrow = (direction: Direction) => {
-    let newPage = page.pageNumber;
-    if (direction === 'prev' && !page.firstPage) newPage = page.pageNumber - 1;
-    if (direction === 'next' && !page.lastPage) newPage = page.pageNumber + 1;
-
-    if (newPage !== page.pageNumber) {
-      const search = searchParams.get('search') || '';
-      setSearchParams({ search, page: `${newPage + 1}` });
-    }
-  };
+  useEffect(() => {
+    const search = searchParams.get('search') || '';
+    setSearchParams({ search, page: `${pageNumber + 1}` });
+  }, [pageNumber, searchParams, setSearchParams]);
 
   return (
     <div className={classes.container}>
       <div className={classes.pagination}>
         <button
-          onClick={() => handleClickArrow('prev')}
+          onClick={() => dispatch(prevPage())}
           className={classes.arrow}
-          disabled={page.firstPage}
+          disabled={firstPage}
           data-testid="pagination-btn-prev"
         >
           ◀
         </button>
         <span className={classes.currentPage} data-testid="pagination-text-page">
-          {page.pageNumber + 1} / {page.totalPages}
+          {pageNumber + 1} / {totalPages}
         </span>
         <button
-          onClick={() => handleClickArrow('next')}
+          onClick={() => dispatch(nextPage())}
           className={classes.arrow}
-          disabled={page.lastPage}
+          disabled={lastPage}
           data-testid="pagination-btn-next"
         >
           ▶

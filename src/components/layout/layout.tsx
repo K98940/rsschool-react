@@ -3,7 +3,9 @@ import { Main } from '../main/main';
 import Header from '../header/header';
 import { Status } from '@/types/types';
 import Spinner from '../spinner/spinner';
+import { useDispatch } from 'react-redux';
 import useLocalStorage from '@/hooks/useLocalStorage';
+import { update } from '../pagination/paginationSlice';
 import { useCallback, useEffect, useState } from 'react';
 import { isEpisodeBaseResponse } from '@/helpers/predicates';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -14,6 +16,7 @@ export const Layout = () => {
   const [localstorage, setLocalstorage] = useLocalStorage();
   const [searchParams, setSearchParams] = useSearchParams('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const updateStatus = (newStatus: Status): void => {
     setState((prevState) => ({ ...prevState, status: newStatus }));
@@ -25,7 +28,7 @@ export const Layout = () => {
 
   const handleSearch = (): void => {
     if (state.status === 'submitting') return;
-    getData(state.query, 0);
+    fetchEpisodes(state.query, 0);
     setLocalstorage(state.query);
 
     navigate(APP_URL_ROOT);
@@ -36,22 +39,26 @@ export const Layout = () => {
     setState((prevState) => ({ ...prevState, query: '' }));
   };
 
-  const getData = useCallback((term: string, page: number) => {
-    updateStatus('submitting');
-    api
-      .searchEpisodes(term.trim(), page)
-      .then((resp) => {
-        if (isEpisodeBaseResponse(resp)) {
-          setState((prevState) => ({ ...prevState, data: resp }));
-        } else {
-          console.log(`this is a bad response (code: ${resp.status}) `, resp.statusText);
-        }
-      })
-      .catch(() => console.log('this is a network error'))
-      .finally(() => {
-        updateStatus('idle');
-      });
-  }, []);
+  const fetchEpisodes = useCallback(
+    (term: string, page: number) => {
+      updateStatus('submitting');
+      api
+        .searchEpisodes(term.trim(), page)
+        .then((resp) => {
+          if (isEpisodeBaseResponse(resp)) {
+            setState((prevState) => ({ ...prevState, data: resp.episodes }));
+            dispatch(update(resp.page));
+          } else {
+            console.log(`this is a bad response (code: ${resp.status}) `, resp.statusText);
+          }
+        })
+        .catch(() => console.log('this is a network error'))
+        .finally(() => {
+          updateStatus('idle');
+        });
+    },
+    [dispatch],
+  );
 
   useEffect(() => {
     const search = searchParams.get('search') || localstorage;
@@ -59,8 +66,8 @@ export const Layout = () => {
     const page = pageParam > 0 ? pageParam - 1 : 0;
 
     setState((prevState) => ({ ...prevState, query: search }));
-    getData(search, page);
-  }, [getData, localstorage, searchParams]);
+    fetchEpisodes(search, page);
+  }, [fetchEpisodes, localstorage, searchParams]);
 
   return (
     <>

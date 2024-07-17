@@ -1,15 +1,15 @@
 import classes from './main.module.css';
 import { memo, MouseEvent } from 'react';
+import { EpisodeBase } from '@/types/types';
 import CardEmpty from '../cardEmpty/cardEmpty';
 import NavElement from '../navElement/navElement';
 import { APP_URL_ROOT } from '@/helpers/constants';
-import { EpisodeBaseResponse } from '@/types/types';
 import { Pagination } from '../pagination/pagination';
 import EpisodeSkeleton from '../skeletones/episodesSkeleton/episodesSkeleton';
 import { Outlet, useNavigate, useNavigation, useSearchParams } from 'react-router-dom';
 
 type MainProps = {
-  data: EpisodeBaseResponse | null;
+  data: EpisodeBase[] | null;
 };
 
 export const Main = memo(({ data }: MainProps) => {
@@ -27,7 +27,7 @@ function Episodes({ data }: MainProps) {
   const search = searchParams.get('search') || '';
   const page = searchParams.get('page') || '';
 
-  if (!data || data.episodes?.length === 0)
+  if (!data || data?.length === 0)
     return (
       <main className={classes.main}>
         <CardEmpty />
@@ -47,10 +47,10 @@ function Episodes({ data }: MainProps) {
       >
         <nav className={classes.episodesNavigation} data-testid="episodes-nav">
           <ol className={classes.navElements}>
-            {data.episodes?.map((episode, i) => <NavElement key={i} episode={episode} search={search} page={page} />)}
+            {data?.map((episode, i) => <NavElement key={i} episode={episode} search={search} page={page} />)}
           </ol>
         </nav>
-        <Pagination page={data.page} />
+        <Pagination />
       </div>
 
       {navigation.state !== 'idle' ? <EpisodeSkeleton /> : <Outlet />}

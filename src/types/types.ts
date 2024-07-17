@@ -3,7 +3,7 @@ export type Status = 'idle' | 'submitting' | 'success';
 export type AppState = {
   query: string;
   status: Status;
-  data: EpisodeBaseResponse | null;
+  data: EpisodeBase[] | null;
 };
 export type ResponsePage = {
   pageNumber: number;
@@ -22,12 +22,10 @@ export type ResponseSortClause = {
 export type ResponseSort = {
   clauses: ResponseSortClause[];
 };
-
 export type Header = {
   uid: string;
   title: string;
 };
-
 export type EpisodeBase = {
   uid: string;
   title: string;
@@ -47,13 +45,11 @@ export type EpisodeBase = {
   usAirDate: string;
   finalScriptDate: string;
 };
-
 export type EpisodeBaseResponse = {
   page: ResponsePage;
   sort: ResponseSort;
   episodes: EpisodeBase[];
 };
-
 export type EpisodeFull = {
   uid: string;
   title: string;
@@ -65,7 +61,23 @@ export type EpisodeFull = {
   };
   usAirDate: string;
 };
-
 export type EpisodeFullResponse = {
   episode: EpisodeFull;
 };
+export type Pagination = {
+  pageNumber: number;
+  pageSize: number;
+  numberOfElements: number;
+  totalElements: number;
+  totalPages: number;
+  firstPage: boolean;
+  lastPage: boolean;
+};
+export type State = {
+  pagination: Pagination;
+};
+export type PaginationPayload = {
+  payload: Pagination;
+  type: string;
+};
+export type Selector<T> = (state: State) => T;

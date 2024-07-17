@@ -1,4 +1,6 @@
 import { Main } from './main';
+import store from '../../store/store';
+import { Provider } from 'react-redux';
 import { test_episode } from '@/helpers/constants';
 import { EpisodeBaseResponse } from '@/types/types';
 import { render, screen, waitFor } from '@testing-library/react';
@@ -26,7 +28,7 @@ describe('Main component', () => {
     const routes: RouteObject[] = [
       {
         path: '/',
-        element: <Main data={data} />,
+        element: <Main data={data.episodes} />,
         loader: () => FAKE_EVENT,
       },
     ];
@@ -34,7 +36,13 @@ describe('Main component', () => {
       initialEntries: ['/'],
       initialIndex: 1,
     });
-    render(<RouterProvider router={router} />);
+
+    render(
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>,
+    );
+
     await waitFor(() => screen.getByTestId('episodes'));
     expect(screen.getByText(test_episode.title)).toBeInTheDocument();
   });

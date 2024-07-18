@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { EpisodeBase } from '@/types/types';
 import classes from './navElement.module.css';
 import { APP_URL_EPISODE } from '@/helpers/constants';
+import { EpisodeCheckbox } from '../episodeCheckbox/episodeCheckbox';
 
 type NavElementProps = {
   episode: EpisodeBase;
@@ -15,6 +16,7 @@ export default function NavElement({ episode, search, page }: NavElementProps) {
 
   return (
     <li className={classes.navElement}>
+      <EpisodeCheckbox id={episode.uid} />
       {
         <NavLink
           to={{

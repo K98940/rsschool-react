@@ -75,8 +75,13 @@ export type Pagination = {
 export type PaginationState = {
   pagination: Pagination;
 };
+
+export type EpisodesList = {
+  currentList: EpisodeBase[];
+  checkedList: EpisodeBase[];
+};
 export type EpisodesState = {
-  episodes: EpisodeBase[];
+  episodes: EpisodesList;
 };
 export type PaginationPayload = {
   payload: Pagination;
@@ -84,5 +89,9 @@ export type PaginationPayload = {
 };
 export type EpisodesPayload = {
   payload: EpisodeBase[];
+  type: string;
+};
+export type EpisodesTogglePayload = {
+  payload: string;
   type: string;
 };

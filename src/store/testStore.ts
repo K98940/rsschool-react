@@ -1,8 +1,11 @@
-import { initialPagination, test_episode } from '@/helpers/constants';
-import { EpisodeBase, EpisodesPayload, PaginationPayload } from '@/types/types';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { initialPagination, test_episode } from '@/helpers/constants';
+import { EpisodesList, EpisodesPayload, EpisodesTogglePayload, PaginationPayload } from '@/types/types';
 
-const initialEpisodes: EpisodeBase[] = [test_episode];
+const initialEpisodes: EpisodesList = {
+  currentList: [test_episode],
+  checkedList: [test_episode],
+};
 
 const paginationSlice = createSlice({
   name: 'pagination',
@@ -22,7 +25,17 @@ const episodesSlice = createSlice({
   name: 'episodes',
   initialState: initialEpisodes,
   reducers: {
-    updateEpisodes: (_, action: EpisodesPayload) => action.payload,
+    updateEpisodes: (state, action: EpisodesPayload) => {
+      state.currentList = action.payload;
+    },
+    checkedEpisode: (state, action: EpisodesTogglePayload) => {
+      const episode = state.currentList.find((episode) => episode.uid === action.payload);
+      episode && state.checkedList.push(episode);
+    },
+    uncheckedEpisode: (state, action: EpisodesTogglePayload) => {
+      const filtered = state.checkedList.filter((episode) => episode.uid !== action.payload);
+      state.checkedList = filtered;
+    },
   },
 });
 

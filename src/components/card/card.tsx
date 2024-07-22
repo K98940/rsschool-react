@@ -5,19 +5,19 @@ import { APP_URL_ROOT } from '@/helpers/constants';
 import { isEpisodeFull } from '@/helpers/predicates';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { fetchDetails, selectDetails, selectStatus } from './detailSlice';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import EpisodeSkeleton from '../skeletones/episodesSkeleton/episodesSkeleton';
-import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
 
 export const Card = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const episodeId = useLoaderData() as string;
+  const { episodeId } = useParams();
   const status = useAppSelector(selectStatus);
   const details = useAppSelector(selectDetails);
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    dispatch(fetchDetails(episodeId));
+    episodeId && dispatch(fetchDetails(episodeId));
   }, [dispatch, episodeId]);
 
   if (status === 'submitting') return <EpisodeSkeleton />;

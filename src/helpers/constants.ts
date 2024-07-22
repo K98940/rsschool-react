@@ -1,6 +1,7 @@
 import { AppState, EpisodeBase, Pagination } from '@/types/types';
 
 export const ResponseKeys = ['headers', 'ok', 'status', 'statusText', 'type', 'url', 'redirected'];
+export const EpisodeFullKeys = ['uid', 'title', 'series', 'season', 'usAirDate'];
 export const EpisodeBaseResponseKeys = ['page', 'sort', 'episodes'];
 export const EpisodeFullResponseKeys = ['episode'];
 export const BASE_URL = 'https://stapi.co/api';
@@ -51,3 +52,4 @@ export const initialPagination: Pagination = {
   firstPage: true,
   lastPage: true,
 };
+export const FILE_ENDING = '_episodes.csv';

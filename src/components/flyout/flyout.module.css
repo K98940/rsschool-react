@@ -1,0 +1,107 @@
+.flyoutContainer {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  bottom: 5em;
+  right: 1em;
+  gap: 0.5em;
+
+  flex: 1 1 3em;
+  width: clamp(13em, 50%, 19em);
+  padding: 1em;
+
+  border: 4px solid rgb(var(--border-color-dark));
+  border-radius: 15px 0;
+  background-color: rgba(var(--card-color), 0.3);
+  backdrop-filter: blur(5px);
+
+  font-size: 0.8em;
+  user-select: none;
+
+  container: flyout / inline-size;
+
+  animation-name: shake;
+  animation-iteration-count: infinite;
+  animation-fill-mode: backwards;
+  animation-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation-duration: 30s;
+
+  transition-delay: 500ms;
+  transition-duration: 500ms;
+}
+
+.__outOfView {
+  right: -100%;
+}
+
+.flyoutTitle {
+  font-size: 1.2em;
+}
+
+.buttonsContainer {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+}
+
+.btnFlyout {
+  flex: 1 1 50%;
+  height: 2em;
+  border-radius: 5px;
+}
+
+.btnUnselectAll {
+  &::before {
+    content: 'Unselect all';
+  }
+}
+
+.btnDownload {
+  &::before {
+    content: 'Download';
+  }
+}
+
+@media (hover: hover) {
+  .btnFlyout:hover {
+    filter: brightness(0.9);
+  }
+}
+
+@container flyout (width < 190px) {
+  .btnFlyout {
+    font-size: 0.7em;
+    height: 2.8em;
+  }
+
+  .btnUnselectAll {
+    &::before {
+      content: '❌';
+    }
+  }
+
+  .btnDownload {
+    &::before {
+      content: '💾';
+    }
+  }
+}
+
+@keyframes shake {
+  0% {
+    filter: brightness(1);
+    transform: rotateZ(0deg);
+  }
+  98% {
+    filter: brightness(1);
+    transform: rotateZ(0deg);
+  }
+  99% {
+    filter: brightness(1.5);
+    transform: rotateZ(3deg);
+  }
+  100% {
+    filter: brightness(1);
+    transform: rotateZ(0deg);
+  }
+}

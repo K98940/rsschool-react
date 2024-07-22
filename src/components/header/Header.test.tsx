@@ -1,62 +1,48 @@
 import Header from './header';
-import { Status } from '@/types/types';
+import { setupServer } from 'msw/node';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
+import { renderWithProviders } from '@/mocks/utils/utils';
+import { handlers as detailsHandlers } from '@mocks/handlers/details';
+import { handlers as episodesHandlers } from '@mocks/handlers/episodes';
 
-const onChange = vi.fn(() => 'onChange');
-const onReset = vi.fn(() => 'onReset');
-const onSearch = vi.fn(() => 'onSearch');
-const TEST_QUERY = 'test';
+const handlers = [...detailsHandlers, ...episodesHandlers];
+const server = setupServer(...handlers);
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe('Header component', () => {
-  const renderComponent = (query: string, status: Status = 'idle') => {
-    return {
-      snapshot: render(
-        <Header
-          query={query}
-          handleQueryChange={onChange}
-          handleQueryReset={onReset}
-          handleSearch={onSearch}
-          status={status}
-        />,
-      ),
-      searchInput: screen.getByTestId('search-input'),
-      resetButton: screen.queryByTestId('reset-btn'),
-      searchButton: screen.getByTestId('search-btn'),
-    };
-  };
+  test('should render Header component with: search input, search button, theme toggle button', async () => {
+    renderWithProviders(<Header />);
+    const header = await screen.findByTestId('app-header');
+    const searchInput = await screen.findByTestId('search-input');
+    const searchButton = await screen.findByTestId('search-btn');
+    const themeToggleButton = await screen.findByTestId('button-theme-toggle');
 
-  it('click Search button should call onSearch callback in the first time', async () => {
-    const { searchButton } = renderComponent(TEST_QUERY);
-    const user = userEvent.setup();
-
-    await user.click(searchButton);
-    expect(onSearch).toBeCalledTimes(1);
+    expect(header).toBeInTheDocument();
+    expect(searchInput).toBeInTheDocument();
+    expect(searchButton).toBeInTheDocument();
+    expect(themeToggleButton).toBeInTheDocument();
   });
-
-  it('press keyboard Enter button should call onSearch callbackin the second time', async () => {
-    renderComponent(TEST_QUERY);
+  test('after text in the search input should appears reset button', async () => {
     const user = userEvent.setup();
+    renderWithProviders(<Header />);
+    const searchInput = await screen.findByTestId('search-input');
 
-    await user.keyboard('[Enter]');
-    expect(onSearch).toBeCalledTimes(2);
-  });
-
-  it('click Reset button should call onReset callback', async () => {
-    const { resetButton } = renderComponent(TEST_QUERY);
-    const user = userEvent.setup();
-
+    await user.type(searchInput, 'test');
+    const resetButton = await screen.findByTestId('reset-btn');
     expect(resetButton).toBeInTheDocument();
-    if (!resetButton) throw new Error();
-    await user.click(resetButton);
-    expect(onReset).toHaveBeenCalled();
   });
-
-  it('typing in the search input should call onChange callback', async () => {
-    const { searchInput } = renderComponent(TEST_QUERY);
+  test('after delete text in the search input should vanish the reset button', async () => {
     const user = userEvent.setup();
+    renderWithProviders(<Header />);
+    const searchInput = await screen.findByTestId('search-input');
 
-    await user.type(searchInput, 'aaa');
-    expect(onChange).toHaveBeenCalledTimes(3);
+    await user.type(searchInput, 'test');
+    const resetButton = await screen.findByTestId('reset-btn');
+    await user.click(resetButton);
+    expect(resetButton).not.toBeInTheDocument();
   });
 });

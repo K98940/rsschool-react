@@ -1,62 +1,29 @@
-import { EpisodeFullResponse } from '@/types/types';
-import Card from './card';
-import { render, screen, waitFor } from '@testing-library/react';
-import { createMemoryRouter, RouteObject, RouterProvider } from 'react-router-dom';
+import { Card } from './card';
+import { setupServer } from 'msw/node';
+import { screen } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
+import { renderWithProviders } from '@/mocks/utils/utils';
+import { handlers as detailsHandlers } from '@mocks/handlers/details';
+import { handlers as episodesHandlers } from '@mocks/handlers/episodes';
 
-const fakeResponse: EpisodeFullResponse = {
-  episode: {
-    season: {
-      title: 'test season',
-    },
-    series: {
-      title: 'test series',
-    },
-    title: 'test title',
-    uid: 'test uid',
-    usAirDate: 'test date',
-  },
-};
-const badResponse = null;
+const handlers = [...detailsHandlers, ...episodesHandlers];
+const server = setupServer(...handlers);
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe('Card component', () => {
-  it('should render test data', async () => {
-    const routes: RouteObject[] = [
-      {
-        path: '/',
-        element: <Card />,
-        loader: () => fakeResponse,
-      },
-    ];
-    const router = createMemoryRouter(routes, {
-      initialEntries: ['/'],
-      initialIndex: 1,
-    });
+  test('should render the list of episodes, after click on the list items and should render detail cards', async () => {
+    renderWithProviders(<Card />);
 
-    render(<RouterProvider router={router} />);
+    await screen.findByText(/Til Death Do Us Part/i);
+    fireEvent.click(screen.getByText(/Til Death Do Us Part/i));
+    expect(await screen.findByText(/Star Trek: Deep Space Nine/i)).toBeInTheDocument();
+    expect(await screen.findByText(/DS9 Season 7/i)).toBeInTheDocument();
 
-    await waitFor(() => screen.queryByRole('heading'));
-    expect(screen.getByRole('banner')).toHaveTextContent(fakeResponse.episode.title);
-    expect(screen.getByTestId('card-season')).toHaveTextContent(fakeResponse.episode.season.title);
-    expect(screen.getByTestId('card-series')).toHaveTextContent(fakeResponse.episode.series.title);
-    expect(screen.getByTestId('card-date')).toHaveTextContent(fakeResponse.episode.usAirDate);
-  });
-
-  it('should not render card if no data', async () => {
-    const routes: RouteObject[] = [
-      {
-        path: '/',
-        element: <Card />,
-        loader: () => badResponse,
-      },
-    ];
-    const router = createMemoryRouter(routes, {
-      initialEntries: ['/'],
-      initialIndex: 1,
-    });
-
-    render(<RouterProvider router={router} />);
-
-    await waitFor(() => screen.queryByTestId('cardempty-header'));
-    expect(screen.queryByTestId('card-season')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText(/...But to Connect/i));
+    expect(await screen.findByText(/Star Trek: Discovery/i)).toBeInTheDocument();
+    expect(await screen.findByText(/DIS Season 4/i)).toBeInTheDocument();
   });
 });

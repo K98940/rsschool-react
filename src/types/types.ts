@@ -1,5 +1,4 @@
-export type SubmitEvents = React.MouseEvent | React.FormEvent;
-export type Status = 'idle' | 'submitting' | 'success';
+export type Status = 'idle' | 'submitting' | 'success' | 'failed';
 export type AppState = {
   query: string;
   status: Status;
@@ -72,26 +71,9 @@ export type Pagination = {
   firstPage: boolean;
   lastPage: boolean;
 };
-export type PaginationState = {
-  pagination: Pagination;
-};
 
-export type EpisodesList = {
-  currentList: EpisodeBase[];
-  checkedList: EpisodeBase[];
-};
-export type EpisodesState = {
-  episodes: EpisodesList;
-};
-export type PaginationPayload = {
-  payload: Pagination;
-  type: string;
-};
-export type EpisodesPayload = {
-  payload: EpisodeBase[];
-  type: string;
-};
-export type EpisodesTogglePayload = {
-  payload: string;
-  type: string;
+export type Details = {
+  data: EpisodeFull;
+  status: Status;
+  error: string | null;
 };

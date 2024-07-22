@@ -1,5 +1,5 @@
 import { Index } from './components/index';
-import Card from './components/card/card';
+import { Card } from './components/card/card';
 import { Layout } from './components/layout/layout';
 import ErrorPage from './components/errorPage/errorPage';
 import { episodeLoader } from './components/card/loader';

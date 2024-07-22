@@ -11,6 +11,7 @@ export default function EpisodeSkeleton() {
           <div className={classes.mockСontent}></div>
           <div className={classes.mockСontent}></div>
           <div className={classes.mockСontent}></div>
+          <div className={classes.mockСontent}></div>
         </div>
       </div>
     </section>

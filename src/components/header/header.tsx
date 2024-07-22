@@ -1,31 +1,55 @@
-import { Status } from '@/types/types';
 import classes from './header.module.css';
-import { useContext, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { APP_URL_ROOT } from '@/helpers/constants';
 import { themeContext } from '@/context/themeContext';
+import useLocalStorage from '@/hooks/useLocalStorage';
 import { ThemeToggle } from '../themeToggle/themeToggle';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
+import { setQuery, selectQuery, selectStatus, fetchEpisodes } from '../episodes/episodesSlice';
 
-type HeaderProps = {
-  query: string;
-  status: Status;
-  handleSearch: () => void;
-  handleQueryChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleQueryReset: () => void;
-};
-
-export default function Header(props: HeaderProps) {
-  const { theme } = useContext(themeContext);
+export default function Header() {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const query = useAppSelector(selectQuery);
+  const status = useAppSelector(selectStatus);
   const ref = useRef<HTMLInputElement>(null);
+  const { theme } = useContext(themeContext);
+  const [localstorage, setLocalstorage] = useLocalStorage();
   const classSearchContainer =
-    props.status === 'submitting' ? `${classes.searchContainer} ${classes.disabledElement}` : classes.searchContainer;
+    status === 'submitting' ? `${classes.searchContainer} ${classes.disabledElement}` : classes.searchContainer;
+  const [firstQuery] = useState(localstorage || query);
+
+  const handleQueryReset = (): void => {
+    dispatch(setQuery(''));
+  };
+
+  const handleQueryChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    dispatch(setQuery(e.target.value));
+  };
+
+  const handleSearch = (): void => {
+    setLocalstorage(query);
+    dispatch(fetchEpisodes({ query }));
+    navigate(APP_URL_ROOT);
+  };
+
+  useEffect(() => {
+    dispatch(setQuery(localstorage));
+  }, [localstorage, dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchEpisodes({ query: firstQuery }));
+  }, [firstQuery, dispatch]);
 
   return (
-    <header className={classes.header} data-theme={theme}>
+    <header className={classes.header} data-theme={theme} data-testid="app-header">
       <div className={classSearchContainer}>
         <form
           className={classes.inputContainer}
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-            props.handleSearch();
+            handleSearch();
           }}
           role="search"
           data-testid="form-search"
@@ -34,20 +58,20 @@ export default function Header(props: HeaderProps) {
             name="search"
             data-testid="search-input"
             className={classes.input}
-            onChange={props.handleQueryChange}
-            value={props.query}
+            onChange={handleQueryChange}
+            value={query}
             placeholder="Search for the Star Trek episode"
             autoFocus
             ref={ref}
           ></input>
-          {props.query.length > 0 && (
+          {query.length > 0 && (
             <button
               data-testid="reset-btn"
               type="reset"
               className={classes.btnReset}
               onClick={() => {
                 ref.current?.focus();
-                props.handleQueryReset();
+                handleQueryReset();
               }}
             >
               x
@@ -59,7 +83,7 @@ export default function Header(props: HeaderProps) {
           className={`button ${classes.btnSearch}`}
           onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.preventDefault();
-            props.handleSearch();
+            handleSearch();
           }}
         >
           Search

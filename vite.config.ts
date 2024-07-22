@@ -1,5 +1,6 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite';
+import { configDefaults } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
@@ -11,6 +12,7 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@api': path.resolve(__dirname, './src/api'),
+      '@mocks': path.resolve(__dirname, './src/mocks'),
       '@assets': path.resolve(__dirname, './src/assets'),
       '@routes': path.resolve(__dirname, './src/routes'),
       '@context': path.resolve(__dirname, './src/context'),
@@ -22,5 +24,9 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: 'setupTest.ts',
+    exclude: [...configDefaults.exclude, '**/mocks/**', '.eslintrc.cjs'],
+    coverage: {
+      exclude: [...configDefaults.exclude, '**/mocks/**', '.eslintrc.cjs'],
+    },
   },
 });

@@ -13,6 +13,7 @@
     "paths": {
       "@/*": ["src/*"],
       "@api/*": ["src/api/*"],
+      "@mocks/*": ["src/mocks/*"],
       "@assets/*": ["src/assets/*"],
       "@routes/*": ["src/routes/*"],
       "@context/*": ["src/context/*"],

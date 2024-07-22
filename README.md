@@ -14,10 +14,10 @@ git clone  https://github.com/K98940/rsschool-react.git
 cd rsschool-react
 ```
 
-3. You are in the `main` branch now. Switch into the branch `class-components`
+3. You are in the `main` branch now. Switch into the branch `app-state-management`
 
 ```shell
-git switch class-components
+git switch app-state-management
 ```
 
 4. Install all the required dependencies
@@ -26,7 +26,13 @@ git switch class-components
 npm install
 ```
 
-5. Run dev server
+5. Run tests
+
+```shell
+npm run test
+```
+
+6. Run dev server
 
 ```shell
 npm run dev

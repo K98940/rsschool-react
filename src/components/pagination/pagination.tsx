@@ -1,36 +1,36 @@
 import classes from './pagination.module.css';
-import { useSearchParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   nextPage,
   prevPage,
-  selectFirstPage,
+  selectQuery,
+  selectStatus,
+  fetchEpisodes,
   selectLastPage,
-  selectPageNumber,
+  selectFirstPage,
   selectTotalPage,
-} from '@components/pagination/paginationSlice';
-import { useEffect } from 'react';
+  selectPageNumber,
+} from '../episodes/episodesSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 
 export const Pagination = () => {
-  const dispatch = useDispatch();
-  const lastPage = useSelector(selectLastPage);
-  const firstPage = useSelector(selectFirstPage);
-  const totalPages = useSelector(selectTotalPage);
-  const pageNumber = useSelector(selectPageNumber);
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  useEffect(() => {
-    const search = searchParams.get('search') || '';
-    setSearchParams({ search, page: `${pageNumber + 1}` });
-  }, [pageNumber, searchParams, setSearchParams]);
+  const dispatch = useAppDispatch();
+  const lastPage = useAppSelector(selectLastPage);
+  const firstPage = useAppSelector(selectFirstPage);
+  const totalPages = useAppSelector(selectTotalPage);
+  const pageNumber = useAppSelector(selectPageNumber);
+  const status = useAppSelector(selectStatus);
+  const query = useAppSelector(selectQuery);
 
   return (
     <div className={classes.container}>
       <div className={classes.pagination}>
         <button
-          onClick={() => dispatch(prevPage())}
+          onClick={() => {
+            dispatch(prevPage());
+            dispatch(fetchEpisodes({ query, page: pageNumber - 1 }));
+          }}
           className={classes.arrow}
-          disabled={firstPage}
+          disabled={firstPage || status === 'submitting'}
           data-testid="pagination-btn-prev"
         >
           ◀
@@ -39,9 +39,12 @@ export const Pagination = () => {
           {pageNumber + 1} / {totalPages}
         </span>
         <button
-          onClick={() => dispatch(nextPage())}
+          onClick={() => {
+            dispatch(nextPage());
+            dispatch(fetchEpisodes({ query, page: pageNumber + 1 }));
+          }}
           className={classes.arrow}
-          disabled={lastPage}
+          disabled={lastPage || status === 'submitting'}
           data-testid="pagination-btn-next"
         >
           ▶

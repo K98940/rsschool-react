@@ -1,10 +1,21 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import detailsReducer from '@components/card/detailSlice';
+import flyoutReducer from '@components/flyout/flyoutSlice';
 import episodesReducer from '@components/episodes/episodesSlice';
-import paginationReducer from '@components/pagination/paginationSlice';
 
-export default configureStore({
-  reducer: {
-    episodes: episodesReducer,
-    pagination: paginationReducer,
-  },
+const rootReducer = combineReducers({
+  flyout: flyoutReducer,
+  details: detailsReducer,
+  episodes: episodesReducer,
 });
+
+export const setupStore = (preloadedState?: Partial<RootState>) => {
+  return configureStore({
+    reducer: rootReducer,
+    preloadedState,
+  });
+};
+
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppStore = ReturnType<typeof setupStore>;
+export type AppDispatch = AppStore['dispatch'];

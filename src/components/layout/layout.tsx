@@ -2,15 +2,18 @@ import { Main } from '../main/main';
 import Header from '../header/header';
 import Spinner from '../spinner/spinner';
 import { Flyout } from '../flyout/flyout';
-import { useSelector } from 'react-redux';
-import { selectStatus } from '../episodes/episodesSlice';
+import { useAppSelector } from '@/hooks/hooks';
+import { useGetEpisodesQuery } from '@/api/apiSlice';
+import { selectPageNumber, selectQuery } from '../episodes/episodesSlice';
 
 export const Layout = () => {
-  const status = useSelector(selectStatus);
+  const pageNumber = useAppSelector(selectPageNumber);
+  const query = useAppSelector(selectQuery);
+  const { isFetching } = useGetEpisodesQuery({ query, pageNumber });
 
   return (
     <>
-      {status === 'submitting' && <Spinner />}
+      {isFetching && <Spinner />}
       <Header />
       <Main />
       <Flyout />

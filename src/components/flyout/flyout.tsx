@@ -30,7 +30,11 @@ const Flyout = () => {
           onClick={() => dispatch(clearList())}
           data-testid="flyout-btn-unselectall"
         ></button>
-        <button className={`button ${classes.btnFlyout}  ${classes.btnDownload}`} onClick={handleDownloadList}></button>
+        <button
+          className={`button ${classes.btnFlyout}  ${classes.btnDownload}`}
+          onClick={handleDownloadList}
+          data-testid="flyout-btn-download"
+        ></button>
       </div>
     </article>
   );

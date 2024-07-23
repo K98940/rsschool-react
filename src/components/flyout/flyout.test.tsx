@@ -14,13 +14,19 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('Flyout component', () => {
-  test('should render flyout component with header "0 items are selected"', async () => {
+  test('should render flyout component with header "0 items are selected" and 2 buttons: "Unselect all" and "Download"', async () => {
     renderWithProviders(<Flyout />);
 
     const header = await screen.findByTestId('flyout-header');
+    const buttonUnsellectAll = await screen.findByTestId('flyout-btn-unselectall');
+    const buttonDownload = await screen.findByTestId('flyout-btn-download');
+
+    expect(header).toBeInTheDocument();
     expect(header).toHaveTextContent(/0 items are selected/i);
+    expect(buttonUnsellectAll).toBeInTheDocument();
+    expect(buttonDownload).toBeInTheDocument();
   });
-  test('select 3 episode`s checkbox should change text header to "3 items are selected"', async () => {
+  test('The flyout element should contain number of selected elements (e.g. "3 items are selected")', async () => {
     const user = userEvent.setup();
     renderWithProviders(<Flyout />);
 
@@ -31,7 +37,7 @@ describe('Flyout component', () => {
     const header = await screen.findByTestId('flyout-header');
     expect(header).toHaveTextContent(/3 items are selected/i);
   });
-  test('select 3 episode`s checkbox, then uncheck 2. It should change text header to "1 items are selected"', async () => {
+  test('Select 3 episode`s checkbox, then uncheck 2. It should change text header to "1 items are selected"', async () => {
     const user = userEvent.setup();
     renderWithProviders(<Flyout />);
 
@@ -46,7 +52,7 @@ describe('Flyout component', () => {
     const header = await screen.findByTestId('flyout-header');
     expect(header).toHaveTextContent(/1 items are selected/i);
   });
-  test('select 3 episode`s checkbox. It should remove class `.__outOfView`', async () => {
+  test('When at least 1 item has been selected, the flyout element should appear at the bottom', async () => {
     const user = userEvent.setup();
     renderWithProviders(<Flyout />);
 
@@ -55,8 +61,6 @@ describe('Flyout component', () => {
 
     const checkboxes = await screen.findAllByTestId('episode-checkbox');
     await user.click(checkboxes[0]);
-    await user.click(checkboxes[1]);
-    await user.click(checkboxes[3]);
     expect(flyout).not.toHaveClass(/__outOfView/i);
   });
   test('select 3 episode`s checkbox. Then unselect all checkboxes. It should add class `.__outOfView`', async () => {
@@ -74,18 +78,35 @@ describe('Flyout component', () => {
     await user.click(checkboxes[3]);
     expect(flyout).toHaveClass(/__outOfView/i);
   });
-  test('select 3 episode`s checkbox. Then click button `Unselect all`. It should add class `.__outOfView`', async () => {
+  test('When "Unselect all" button is clicked, all the selected items should be unselected and the flyout should be removed from the page', async () => {
     const user = userEvent.setup();
     renderWithProviders(<Flyout />);
 
     const flyout = await screen.findByTestId('flyout-article');
     const checkboxes = await screen.findAllByTestId('episode-checkbox');
     const btnUnselectAll = await screen.findByTestId('flyout-btn-unselectall');
+
+    await Promise.all(checkboxes.map(async (checkbox) => await user.click(checkbox)));
+    await user.click(btnUnselectAll);
+    expect(flyout).toHaveClass(/__outOfView/i);
+    checkboxes.forEach((checkbox) => expect(checkbox).not.toBeChecked());
+  });
+  test('When user navigates to the next page, and then goes back, previously selected items should be shown', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<Flyout />);
+
+    const checkboxes = await screen.findAllByTestId('episode-checkbox');
+    const buttonPrevPage = await screen.findByTestId('pagination-btn-prev');
+    const buttonNextPage = await screen.findByTestId('pagination-btn-next');
+
     await user.click(checkboxes[0]);
     await user.click(checkboxes[1]);
     await user.click(checkboxes[3]);
+    await user.click(buttonNextPage);
+    await user.click(buttonPrevPage);
 
-    await user.click(btnUnselectAll);
-    expect(flyout).toHaveClass(/__outOfView/i);
+    expect(checkboxes[0]).toBeChecked();
+    expect(checkboxes[1]).toBeChecked();
+    expect(checkboxes[3]).toBeChecked();
   });
 });

@@ -1,5 +1,11 @@
-import { EpisodeBaseResponse, EpisodeFull, EpisodeFullResponse } from '@/types/types';
-import { ResponseKeys, EpisodeBaseResponseKeys, EpisodeFullResponseKeys, EpisodeFullKeys } from './constants';
+import { EpisodeBase, EpisodeBaseResponse, EpisodeFull, EpisodeFullResponse } from '@/types/types';
+import {
+  ResponseKeys,
+  EpisodeBaseResponseKeys,
+  EpisodeFullResponseKeys,
+  EpisodeFullKeys,
+  EpisodeBaseKeys,
+} from './constants';
 
 export function isResponse(data: unknown | Response): data is Response {
   if (typeof data !== 'object') return false;
@@ -16,4 +22,8 @@ export function isEpisodeFullResponse(data: unknown | EpisodeFullResponse): data
 export function isEpisodeFull(data: unknown | EpisodeFull): data is EpisodeFull {
   if (typeof data !== 'object') return false;
   return EpisodeFullKeys.every((key) => key in (data as EpisodeFull));
+}
+export function isEpisodeBase(data: unknown | EpisodeBase): data is EpisodeBase {
+  if (typeof data !== 'object') return false;
+  return EpisodeBaseKeys.every((key) => key in (data as EpisodeBase));
 }

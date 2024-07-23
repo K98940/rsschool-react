@@ -2,12 +2,13 @@ import { AppState, EpisodeBase, Pagination } from '@/types/types';
 
 export const ResponseKeys = ['headers', 'ok', 'status', 'statusText', 'type', 'url', 'redirected'];
 export const EpisodeFullKeys = ['uid', 'title', 'series', 'season', 'usAirDate'];
+export const EpisodeBaseKeys = ['uid', 'title', 'series', 'season', 'seasonNumber', 'episodeNumber', 'usAirDate'];
 export const EpisodeBaseResponseKeys = ['page', 'sort', 'episodes'];
 export const EpisodeFullResponseKeys = ['episode'];
 export const BASE_URL = 'https://stapi.co/api';
 export const paths = {
   episodeSearch: '/v1/rest/episode/search',
-  episode: '/v1/rest/episode',
+  episode: '/v1/rest/episode?uid=',
 };
 export const localStorageKey = 'K1vjGYuKHzp4ZI9Xsrgq';
 export const initialState: AppState = {

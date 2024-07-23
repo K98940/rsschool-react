@@ -71,9 +71,3 @@ export type Pagination = {
   firstPage: boolean;
   lastPage: boolean;
 };
-
-export type Details = {
-  data: EpisodeFull;
-  status: Status;
-  error: string | null;
-};

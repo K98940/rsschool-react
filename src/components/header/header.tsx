@@ -1,52 +1,49 @@
 import classes from './header.module.css';
 import { useNavigate } from 'react-router-dom';
 import { APP_URL_ROOT } from '@/helpers/constants';
+import { useGetEpisodesQuery } from '@/api/apiSlice';
 import { themeContext } from '@/context/themeContext';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { ThemeToggle } from '../themeToggle/themeToggle';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { setQuery, selectQuery, setPage } from '../episodes/episodesSlice';
 import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
-import { setQuery, selectQuery, selectStatus, fetchEpisodes } from '../episodes/episodesSlice';
 
 export default function Header() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const query = useAppSelector(selectQuery);
-  const status = useAppSelector(selectStatus);
   const ref = useRef<HTMLInputElement>(null);
   const { theme } = useContext(themeContext);
   const [localstorage, setLocalstorage] = useLocalStorage();
-  const classSearchContainer =
-    status === 'submitting' ? `${classes.searchContainer} ${classes.disabledElement}` : classes.searchContainer;
-  const [firstQuery] = useState(localstorage || query);
+  const query = useAppSelector(selectQuery);
+  const [term, setTerm] = useState(query);
+  const { isFetching } = useGetEpisodesQuery({ query, pageNumber: 0 });
 
   const handleQueryReset = (): void => {
-    dispatch(setQuery(''));
+    setTerm('');
   };
 
   const handleQueryChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    dispatch(setQuery(e.target.value));
+    setTerm(e.target.value);
   };
 
   const handleSearch = (): void => {
-    setLocalstorage(query);
-    dispatch(fetchEpisodes({ query }));
+    dispatch(setQuery(term));
+    dispatch(setPage(0));
+    setLocalstorage(term);
     navigate(APP_URL_ROOT);
   };
 
   useEffect(() => {
     dispatch(setQuery(localstorage));
+    setTerm(localstorage);
   }, [localstorage, dispatch]);
-
-  useEffect(() => {
-    dispatch(fetchEpisodes({ query: firstQuery }));
-  }, [firstQuery, dispatch]);
 
   return (
     <header className={classes.header} data-theme={theme} data-testid="app-header">
-      <div className={classSearchContainer}>
+      <div className={classes.searchContainer}>
         <form
-          className={classes.inputContainer}
+          className={`${classes.inputContainer} ${isFetching ? classes.disabledElement : ''}`}
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             handleSearch();
@@ -59,12 +56,12 @@ export default function Header() {
             data-testid="search-input"
             className={classes.input}
             onChange={handleQueryChange}
-            value={query}
+            value={term}
             placeholder="Search for the Star Trek episode"
             autoFocus
             ref={ref}
           ></input>
-          {query.length > 0 && (
+          {term.length > 0 && (
             <button
               data-testid="reset-btn"
               type="reset"

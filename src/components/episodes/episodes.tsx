@@ -1,20 +1,26 @@
 import { MouseEvent } from 'react';
-import { useSelector } from 'react-redux';
 import classes from './episodes.module.css';
 import CardEmpty from '../cardEmpty/cardEmpty';
-import { selectEpisodes } from './episodesSlice';
+import { useAppSelector } from '@/hooks/hooks';
 import NavElement from '../navElement/navElement';
 import { APP_URL_ROOT } from '@/helpers/constants';
+import { useGetEpisodesQuery } from '@/api/apiSlice';
 import { Pagination } from '../pagination/pagination';
+import { isEpisodeBaseResponse } from '@/helpers/predicates';
+import { selectPageNumber, selectQuery } from './episodesSlice';
 import { Outlet, useNavigate, useNavigation } from 'react-router-dom';
 import EpisodeSkeleton from '../skeletones/episodesSkeleton/episodesSkeleton';
 
 function Episodes() {
   const navigate = useNavigate();
   const navigation = useNavigation();
-  const episodes = useSelector(selectEpisodes);
+  const pageNumber = useAppSelector(selectPageNumber);
+  const query = useAppSelector(selectQuery);
+  const { data } = useGetEpisodesQuery({ query, pageNumber });
 
-  if (episodes?.data?.length === 0) return <CardEmpty />;
+  if (!isEpisodeBaseResponse(data)) return <CardEmpty />;
+  const { episodes } = data;
+
   return (
     <>
       <div
@@ -28,7 +34,9 @@ function Episodes() {
       >
         <nav className={classes.episodesNavigation} data-testid="episodes-nav">
           <ol className={classes.navElements}>
-            {episodes?.data?.map((episode, i) => <NavElement key={i} episode={episode} />)}
+            {episodes.map((episode, i) => (
+              <NavElement key={i} episode={episode} />
+            ))}
           </ol>
         </nav>
         <Pagination />

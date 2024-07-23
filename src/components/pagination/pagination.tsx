@@ -1,36 +1,26 @@
 import classes from './pagination.module.css';
-import {
-  nextPage,
-  prevPage,
-  selectQuery,
-  selectStatus,
-  fetchEpisodes,
-  selectLastPage,
-  selectFirstPage,
-  selectTotalPage,
-  selectPageNumber,
-} from '../episodes/episodesSlice';
+import { useGetEpisodesQuery } from '@/api/apiSlice';
+import { isEpisodeBaseResponse } from '@/helpers/predicates';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { nextPage, prevPage, selectQuery, selectPageNumber } from '../episodes/episodesSlice';
 
 export const Pagination = () => {
   const dispatch = useAppDispatch();
-  const lastPage = useAppSelector(selectLastPage);
-  const firstPage = useAppSelector(selectFirstPage);
-  const totalPages = useAppSelector(selectTotalPage);
   const pageNumber = useAppSelector(selectPageNumber);
-  const status = useAppSelector(selectStatus);
   const query = useAppSelector(selectQuery);
+  const { isFetching, data } = useGetEpisodesQuery({ query, pageNumber });
+  if (!isEpisodeBaseResponse(data)) return;
+  const { firstPage, lastPage, totalPages } = data.page;
 
   return (
-    <div className={classes.container}>
+    <div className={classes.container} data-testid="pagination-container">
       <div className={classes.pagination}>
         <button
           onClick={() => {
             dispatch(prevPage());
-            dispatch(fetchEpisodes({ query, page: pageNumber - 1 }));
           }}
           className={classes.arrow}
-          disabled={firstPage || status === 'submitting'}
+          disabled={firstPage || isFetching}
           data-testid="pagination-btn-prev"
         >
           ◀
@@ -41,10 +31,9 @@ export const Pagination = () => {
         <button
           onClick={() => {
             dispatch(nextPage());
-            dispatch(fetchEpisodes({ query, page: pageNumber + 1 }));
           }}
           className={classes.arrow}
-          disabled={lastPage || status === 'submitting'}
+          disabled={lastPage || isFetching}
           data-testid="pagination-btn-next"
         >
           ▶

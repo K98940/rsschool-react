@@ -1,18 +1,19 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import detailsReducer from '@components/card/detailSlice';
+import { apiSlice } from '@/api/apiSlice';
 import flyoutReducer from '@components/flyout/flyoutSlice';
 import episodesReducer from '@components/episodes/episodesSlice';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 const rootReducer = combineReducers({
   flyout: flyoutReducer,
-  details: detailsReducer,
   episodes: episodesReducer,
+  [apiSlice.reducerPath]: apiSlice.reducer,
 });
 
 export const setupStore = (preloadedState?: Partial<RootState>) => {
   return configureStore({
     reducer: rootReducer,
     preloadedState,
+    middleware: (getDefaulMiddleware) => getDefaulMiddleware().concat(apiSlice.middleware),
   });
 };
 

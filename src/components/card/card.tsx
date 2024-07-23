@@ -1,27 +1,19 @@
-import { useEffect } from 'react';
 import classes from './card.module.css';
 import CardEmpty from '../cardEmpty/cardEmpty';
 import { APP_URL_ROOT } from '@/helpers/constants';
+import { useGetDetailsQuery } from '@/api/apiSlice';
 import { isEpisodeFull } from '@/helpers/predicates';
-import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { fetchDetails, selectDetails, selectStatus } from './detailSlice';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import EpisodeSkeleton from '../skeletones/episodesSkeleton/episodesSkeleton';
 
 export const Card = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const { episodeId } = useParams();
-  const status = useAppSelector(selectStatus);
-  const details = useAppSelector(selectDetails);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const result = useGetDetailsQuery(episodeId || '');
 
-  useEffect(() => {
-    episodeId && dispatch(fetchDetails(episodeId));
-  }, [dispatch, episodeId]);
-
-  if (status === 'submitting') return <EpisodeSkeleton />;
-  if (episodeId && isEpisodeFull(details)) {
+  if (result.isFetching) return <EpisodeSkeleton />;
+  if (result.data && isEpisodeFull(result.data.episode)) {
+    const details = result.data.episode;
     return (
       <section className={classes.container}>
         <div className={classes.card}>
@@ -42,10 +34,7 @@ export const Card = () => {
           <button
             className={classes.btnCloseCard}
             onClick={() => {
-              const search = searchParams.get('search') || '';
-              const page = searchParams.get('page') || '';
               navigate(APP_URL_ROOT);
-              setSearchParams({ search, page });
             }}
           >
             Close

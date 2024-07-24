@@ -2,13 +2,13 @@ import classes from './flyout.module.css';
 import createCSV from '@/helpers/createCSV';
 import saveToFile from '@/helpers/saveToFile';
 import { FILE_ENDING } from '@/helpers/constants';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { clearList, selectCheckedCount, selectCheckedEpisodes } from './flyoutSlice';
 
 const Flyout = () => {
-  const dispatch = useDispatch();
-  const countCheckedEpisodes = useSelector(selectCheckedCount);
-  const checkedEpisodes = useSelector(selectCheckedEpisodes);
+  const dispatch = useAppDispatch();
+  const countCheckedEpisodes = useAppSelector(selectCheckedCount);
+  const checkedEpisodes = useAppSelector(selectCheckedEpisodes);
 
   const handleDownloadList = () => {
     const blob = new Blob(createCSV(checkedEpisodes), { type: 'text/plain' });

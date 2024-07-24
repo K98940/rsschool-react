@@ -1,14 +1,13 @@
 import { ChangeEvent } from 'react';
-import { useSelector } from 'react-redux';
 import { EpisodeBase } from '@/types/types';
-import { useAppDispatch } from '@/hooks/hooks';
 import classes from './episodeCheckbox.module.css';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { addEpisode, isCheckedEpisode, removeEpisode } from '../flyout/flyoutSlice';
 
 type Props = { episode: EpisodeBase };
 
 const EpisodeCheckbox = ({ episode }: Props) => {
-  const isChecked = useSelector(isCheckedEpisode(episode.uid));
+  const isChecked = useAppSelector(isCheckedEpisode(episode.uid));
   const dispatch = useAppDispatch();
 
   const handleToggle = (e: ChangeEvent<HTMLInputElement>) => {

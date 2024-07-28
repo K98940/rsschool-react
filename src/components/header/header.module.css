@@ -1,0 +1,86 @@
+.header {
+  flex: 0 0 5em;
+  padding: 1em;
+  border-block-end: 1px solid rgb(var(--border-color-light));
+}
+
+.searchContainer {
+  display: flex;
+  height: 100%;
+  gap: 0.5rem;
+  container: searchContainer / size;
+
+  font-family: var(--font-common);
+}
+
+.inputContainer {
+  --font-size: 50cqh;
+  --input-padding-button: 5px;
+
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  height: 100%;
+  gap: 5.5em;
+
+  font-size: var(--font-size);
+  font-family: inherit;
+}
+
+.input {
+  width: 100%;
+  height: 100%;
+  padding-inline-start: 0.5em;
+  padding-inline-end: 100cqh;
+
+  font-size: inherit;
+  font-family: inherit;
+  color: rgb(var(--input-color));
+  background-color: rgb(var(--input-color-background));
+
+  border-radius: var(--border-radius-input);
+  border: 2px solid rgb(var(--border-color-light));
+
+  &::placeholder {
+    color: rgb(var(--card-color));
+    opacity: 0.2;
+  }
+}
+
+.btnReset {
+  position: absolute;
+  right: 0;
+
+  height: calc(100% - var(--input-padding-button) * 2);
+  transform: translate(calc(-1 * var(--input-padding-button)), var(--input-padding-button));
+  aspect-ratio: 1/1;
+
+  opacity: 0.5;
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  user-select: none;
+
+  border-radius: var(--border-radius-input);
+  border: 2px solid rgb(var(--border-color-light));
+}
+
+.btnSearch {
+  margin-inline-end: 5em;
+}
+
+.disabledElement {
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (hover: hover) {
+  .btnSearch:hover {
+    color: rgb(var(--card-color));
+    background-color: rgb(var(--hover-color));
+    cursor: pointer;
+  }
+  .btnReset:hover {
+    filter: brightness(0.8);
+  }
+}

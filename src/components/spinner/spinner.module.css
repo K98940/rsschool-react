@@ -1,6 +1,7 @@
 .spinner {
   display: grid;
   position: fixed;
+  top: -100dvh;
   width: 100vw;
   height: 100dvh;
   place-items: center;

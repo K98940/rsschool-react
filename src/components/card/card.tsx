@@ -1,15 +1,13 @@
 import classes from './card.module.css';
 import CardEmpty from '../cardEmpty/cardEmpty';
-import { APP_URL_ROOT } from '@/helpers/constants';
+import useGetParams from '@/hooks/useGetParams';
 import { useGetDetailsQuery } from '@/api/apiSlice';
 import { isEpisodeFull } from '@/helpers/predicates';
-import { useNavigate, useParams } from 'react-router-dom';
 import EpisodeSkeleton from '../skeletones/episodesSkeleton/episodesSkeleton';
 
 export const Card = () => {
-  const navigate = useNavigate();
-  const { episodeId } = useParams();
-  const result = useGetDetailsQuery(episodeId || '');
+  const { router, id, pageNumber } = useGetParams();
+  const result = useGetDetailsQuery(id);
 
   if (result.isFetching) return <EpisodeSkeleton />;
   if (result.data && isEpisodeFull(result.data.episode)) {
@@ -34,7 +32,7 @@ export const Card = () => {
           <button
             className={classes.btnCloseCard}
             onClick={() => {
-              navigate(APP_URL_ROOT);
+              router.push(`/page/${pageNumber}`);
             }}
           >
             Close

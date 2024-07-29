@@ -1,11 +1,15 @@
-import { memo } from 'react';
+import { memo, ReactNode } from 'react';
 import classes from './main.module.css';
 import { Episodes } from '../episodes/episodes';
 
-export const Main = memo(() => {
+type MainProps = {
+  children?: ReactNode;
+};
+
+export const Main = memo(({ children }: MainProps) => {
   return (
     <main className={classes.main}>
-      <Episodes />
+      <Episodes>{children}</Episodes>
     </main>
   );
 });

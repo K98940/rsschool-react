@@ -6,13 +6,14 @@ type GetEpisodesQueryProps = { query: string; pageNumber: number };
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  keepUnusedDataFor: 300,
   endpoints: (builder) => ({
     getDetails: builder.query({
       query: (episodeId: string) => `${paths.episode}${episodeId}`,
     }),
     getEpisodes: builder.query({
       query: ({ query, pageNumber }: GetEpisodesQueryProps) => ({
-        url: `${paths.episodeSearch}?pageNumber=${pageNumber}&pageSize=${PAGE_SIZE}`,
+        url: `${paths.episodeSearch}?pageNumber=${pageNumber - 1}&pageSize=${PAGE_SIZE}`,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },

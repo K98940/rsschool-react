@@ -1,12 +1,15 @@
+import Spinner from '../spinner/spinner';
 import classes from './pagination.module.css';
+import { useAppSelector } from '@/hooks/hooks';
+import useGetParams from '@/hooks/useGetParams';
 import { useGetEpisodesQuery } from '@/api/apiSlice';
+import { selectQuery } from '../episodes/episodesSlice';
 import { isEpisodeBaseResponse } from '@/helpers/predicates';
-import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { nextPage, prevPage, selectQuery, selectPageNumber } from '../episodes/episodesSlice';
+
+const getHref = (pageNumber: number, id: string): string => `/page/${pageNumber}${id ? '/episode/' + id : ''}`;
 
 export const Pagination = () => {
-  const dispatch = useAppDispatch();
-  const pageNumber = useAppSelector(selectPageNumber);
+  const { router, pageNumber, id } = useGetParams();
   const query = useAppSelector(selectQuery);
   const { isFetching, data } = useGetEpisodesQuery({ query, pageNumber });
   if (!isEpisodeBaseResponse(data)) return;
@@ -14,10 +17,12 @@ export const Pagination = () => {
 
   return (
     <div className={classes.container} data-testid="pagination-container">
+      {isFetching && <Spinner />}
       <div className={classes.pagination}>
         <button
           onClick={() => {
-            dispatch(prevPage());
+            const href = getHref(pageNumber - 1, id);
+            router.push(href);
           }}
           className={classes.arrow}
           disabled={firstPage || isFetching}
@@ -26,11 +31,12 @@ export const Pagination = () => {
           ◀
         </button>
         <span className={classes.currentPage} data-testid="pagination-text-page">
-          {pageNumber + 1} / {totalPages}
+          {pageNumber} / {totalPages}
         </span>
         <button
           onClick={() => {
-            dispatch(nextPage());
+            const href = getHref(pageNumber + 1, id);
+            router.push(href);
           }}
           className={classes.arrow}
           disabled={lastPage || isFetching}

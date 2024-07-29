@@ -20,12 +20,6 @@ const episodesSlice = createSlice({
     setQuery: (state, action: PayloadAction<string>) => {
       state.query = action.payload;
     },
-    nextPage: (state) => {
-      state.pagination.pageNumber += 1;
-    },
-    prevPage: (state) => {
-      state.pagination.pageNumber -= 1;
-    },
     setPage: (state, action: PayloadAction<number>) => {
       state.pagination.pageNumber = action.payload;
     },
@@ -35,4 +29,4 @@ const episodesSlice = createSlice({
 export default episodesSlice.reducer;
 export const selectQuery = (state: RootState) => state.episodes.query;
 export const selectPageNumber = (state: RootState) => state.episodes.pagination?.pageNumber;
-export const { setQuery, nextPage, prevPage, setPage } = episodesSlice.actions;
+export const { setQuery, setPage } = episodesSlice.actions;

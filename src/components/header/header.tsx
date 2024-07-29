@@ -1,6 +1,6 @@
+'use client';
 import classes from './header.module.css';
-import { useNavigate } from 'react-router-dom';
-import { APP_URL_ROOT } from '@/helpers/constants';
+import useGetParams from '@/hooks/useGetParams';
 import { useGetEpisodesQuery } from '@/api/apiSlice';
 import { themeContext } from '@/context/themeContext';
 import useLocalStorage from '@/hooks/useLocalStorage';
@@ -10,13 +10,13 @@ import { setQuery, selectQuery, setPage } from '../episodes/episodesSlice';
 import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
 
 export default function Header() {
-  const navigate = useNavigate();
+  const { router, id } = useGetParams();
   const dispatch = useAppDispatch();
   const ref = useRef<HTMLInputElement>(null);
+  const [term, setTerm] = useState('');
   const { theme } = useContext(themeContext);
   const [localstorage, setLocalstorage] = useLocalStorage();
   const query = useAppSelector(selectQuery);
-  const [term, setTerm] = useState(query);
   const { isFetching } = useGetEpisodesQuery({ query, pageNumber: 0 });
 
   const handleQueryReset = (): void => {
@@ -31,7 +31,8 @@ export default function Header() {
     dispatch(setQuery(term));
     dispatch(setPage(0));
     setLocalstorage(term);
-    navigate(APP_URL_ROOT);
+    const href = `/page/1${id ? '/episode/' + id : ''}`;
+    router.push(href);
   };
 
   useEffect(() => {

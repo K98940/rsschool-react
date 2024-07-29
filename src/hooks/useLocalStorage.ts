@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { isServer } from '@/helpers/isServer';
 import { localStorageKey } from '@helpers/constants';
 
 type Fun = (value: string) => void;
@@ -12,6 +13,7 @@ function useLocalStorage(): T {
   }, [value]);
 
   function getValue() {
+    if (isServer()) return '';
     return localStorage.getItem(localStorageKey) || '';
   }
 

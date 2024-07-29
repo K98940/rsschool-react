@@ -1,6 +1,7 @@
 import { Component, ReactNode } from 'react';
 import classes from './errorBoundary.module.css';
 import imgBroken from '@assets/img/broken.webp';
+import Image from 'next/image';
 
 type ErrorBoundaryProps = {
   children?: ReactNode;
@@ -27,7 +28,7 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps> {
       return (
         <div className={classes.boundaryContainer}>
           <h1 className={classes.header}>{ERROR_MESSAGE_TITLE}</h1>
-          <img src={imgBroken} alt={ERROR_MESSAGE_TITLE} />
+          <Image src={imgBroken} alt={ERROR_MESSAGE_TITLE} />
           <p className={classes.content}>{ERROR_MESSAGE_BOTTOM}</p>
         </div>
       );

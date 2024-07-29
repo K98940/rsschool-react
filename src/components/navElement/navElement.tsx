@@ -1,26 +1,21 @@
-import { NavLink } from 'react-router-dom';
+import Link from 'next/link';
 import { EpisodeBase } from '@/types/types';
 import classes from './navElement.module.css';
-import { APP_URL_EPISODE } from '@/helpers/constants';
+import useGetParams from '@/hooks/useGetParams';
 import { EpisodeCheckbox } from '../episodeCheckbox/episodeCheckbox';
 
 type NavElementProps = {
   episode: EpisodeBase;
 };
 export default function NavElement({ episode }: NavElementProps) {
+  const { pageNumber, id } = useGetParams();
+  const href = `/page/${pageNumber}/episode/${episode.uid}`;
+  const classList = `${classes.navElement} ${id === episode.uid ? classes.active : ''}`;
+
   return (
-    <li className={classes.navElement}>
+    <li className={classList}>
       <EpisodeCheckbox episode={episode} />
-      {
-        <NavLink
-          to={{
-            pathname: `${APP_URL_EPISODE}${episode.uid}`,
-          }}
-          className={({ isActive, isPending }) => (isActive ? classes.active : isPending ? classes.pending : '')}
-        >
-          {episode.title}
-        </NavLink>
-      }
+      {<Link href={href}>{episode.title}</Link>}
     </li>
   );
 }

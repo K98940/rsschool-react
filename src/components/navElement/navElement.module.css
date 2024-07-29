@@ -58,4 +58,8 @@
   .navElement:hover {
     background-color: color-mix(in srgb, rgb(var(--input-color-background)) 95%, black 5%);
   }
+
+  .active:hover {
+    background-color: rgb(var(--hover-color));
+  }
 }

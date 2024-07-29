@@ -24,9 +24,9 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: 'setupTest.ts',
-    exclude: [...configDefaults.exclude, '**/mocks/**', '.eslintrc.cjs'],
+    exclude: [...configDefaults.exclude, '**/mocks/**', '.eslintrc.cjs', 'next.config.mjs'],
     coverage: {
-      exclude: [...configDefaults.exclude, '**/mocks/**', '.eslintrc.cjs'],
+      exclude: [...configDefaults.exclude, '**/mocks/**', '.eslintrc.cjs', 'next.config.mjs'],
     },
   },
 });

@@ -5,6 +5,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:@next/next/recommended',
     'prettier',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
@@ -20,6 +21,15 @@ module.exports = {
         name: 'react-redux',
         importNames: ['useSelector', 'useDispatch'],
         message: 'Use typed hooks `useAppDispatch` and `useAppSelector` instead.',
+      },
+    ],
+    '@typescript-eslint/ban-types': [
+      'error',
+      {
+        extendDefaults: true,
+        types: {
+          '{}': false,
+        },
       },
     ],
   },

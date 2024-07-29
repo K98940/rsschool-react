@@ -1,24 +1,24 @@
-import { MouseEvent } from 'react';
+'use client';
 import classes from './episodes.module.css';
-import CardEmpty from '../cardEmpty/cardEmpty';
+import { selectQuery } from './episodesSlice';
+import { MouseEvent, ReactNode } from 'react';
 import { useAppSelector } from '@/hooks/hooks';
+import useGetParams from '@/hooks/useGetParams';
 import NavElement from '../navElement/navElement';
-import { APP_URL_ROOT } from '@/helpers/constants';
 import { useGetEpisodesQuery } from '@/api/apiSlice';
 import { Pagination } from '../pagination/pagination';
 import { isEpisodeBaseResponse } from '@/helpers/predicates';
-import { selectPageNumber, selectQuery } from './episodesSlice';
-import { Outlet, useNavigate, useNavigation } from 'react-router-dom';
-import EpisodeSkeleton from '../skeletones/episodesSkeleton/episodesSkeleton';
 
-function Episodes() {
-  const navigate = useNavigate();
-  const navigation = useNavigation();
-  const pageNumber = useAppSelector(selectPageNumber);
+type EpisodesProps = {
+  children?: ReactNode;
+};
+
+function Episodes({ children }: EpisodesProps) {
+  const { pageNumber, router } = useGetParams();
   const query = useAppSelector(selectQuery);
   const { data } = useGetEpisodesQuery({ query, pageNumber });
 
-  if (!isEpisodeBaseResponse(data)) return <CardEmpty />;
+  if (!isEpisodeBaseResponse(data)) return;
   const { episodes } = data;
 
   return (
@@ -28,7 +28,7 @@ function Episodes() {
         data-testid="episodes"
         onClick={(e: MouseEvent) => {
           if (e.target instanceof HTMLElement && e.target.tagName === 'NAV') {
-            navigate(APP_URL_ROOT);
+            router.push(`/page/${pageNumber}`);
           }
         }}
       >
@@ -42,7 +42,7 @@ function Episodes() {
         <Pagination />
       </div>
 
-      {navigation.state !== 'idle' ? <EpisodeSkeleton /> : <Outlet />}
+      {children}
     </>
   );
 }

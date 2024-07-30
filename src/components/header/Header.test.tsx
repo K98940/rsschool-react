@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/mocks/utils/utils';
 import { handlers as detailsHandlers } from '@mocks/handlers/details';
 import { handlers as episodesHandlers } from '@mocks/handlers/episodes';
+import { afterAll, afterEach, beforeAll, describe, expect, test, vitest } from 'vitest';
 
 const handlers = [...detailsHandlers, ...episodesHandlers];
 const server = setupServer(...handlers);
@@ -12,6 +13,7 @@ const server = setupServer(...handlers);
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
+vitest.mock('next/router', () => require('next-router-mock'));
 
 describe('Header component', () => {
   test('should render Header component with: search input, search button, theme toggle button', async () => {

@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { isEpisodeBaseResponse, isEpisodeFullResponse, isResponse } from './predicates';
 
 describe('isResponse predicate', () => {

@@ -1,21 +1,33 @@
 import { Flyout } from './flyout';
+import { Main } from '../main/main';
+import Header from '../header/header';
 import { setupServer } from 'msw/node';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/mocks/utils/utils';
 import { handlers as detailsHandlers } from '@mocks/handlers/details';
 import { handlers as episodesHandlers } from '@mocks/handlers/episodes';
+import { afterAll, afterEach, beforeAll, describe, expect, test, vitest } from 'vitest';
 
 const handlers = [...detailsHandlers, ...episodesHandlers];
 const server = setupServer(...handlers);
 
-beforeAll(() => server.listen());
+beforeAll(() => {
+  vitest.mock('next/router', () => require('next-router-mock'));
+  server.listen();
+});
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('Flyout component', () => {
-  test('should render flyout component with header "0 items are selected" and 2 buttons: "Unselect all" and "Download"', async () => {
-    renderWithProviders(<Flyout />);
+  test('should render flyout component with header and 2 buttons', async () => {
+    renderWithProviders(
+      <>
+        <Header />
+        <Main />
+        <Flyout />
+      </>,
+    );
 
     const header = await screen.findByTestId('flyout-header');
     const buttonUnsellectAll = await screen.findByTestId('flyout-btn-unselectall');
@@ -26,9 +38,15 @@ describe('Flyout component', () => {
     expect(buttonUnsellectAll).toBeInTheDocument();
     expect(buttonDownload).toBeInTheDocument();
   });
-  test('The flyout element should contain number of selected elements (e.g. "3 items are selected")', async () => {
+  test('The flyout element should contain number of selected elements', async () => {
     const user = userEvent.setup();
-    renderWithProviders(<Flyout />);
+    renderWithProviders(
+      <>
+        <Header />
+        <Main />
+        <Flyout />
+      </>,
+    );
 
     const checkboxes = await screen.findAllByTestId('episode-checkbox');
     await user.click(checkboxes[0]);
@@ -37,9 +55,15 @@ describe('Flyout component', () => {
     const header = await screen.findByTestId('flyout-header');
     expect(header).toHaveTextContent(/3 items are selected/i);
   });
-  test('Select 3 episode`s checkbox, then uncheck 2. It should change text header to "1 items are selected"', async () => {
+  test('Select 3 episode`s checkbox, then uncheck 2. It should change text header', async () => {
     const user = userEvent.setup();
-    renderWithProviders(<Flyout />);
+    renderWithProviders(
+      <>
+        <Header />
+        <Main />
+        <Flyout />
+      </>,
+    );
 
     const checkboxes = await screen.findAllByTestId('episode-checkbox');
     await user.click(checkboxes[0]);
@@ -54,7 +78,13 @@ describe('Flyout component', () => {
   });
   test('When at least 1 item has been selected, the flyout element should appear at the bottom', async () => {
     const user = userEvent.setup();
-    renderWithProviders(<Flyout />);
+    renderWithProviders(
+      <>
+        <Header />
+        <Main />
+        <Flyout />
+      </>,
+    );
 
     const flyout = await screen.findByTestId('flyout-article');
     expect(flyout).toHaveClass(/__outOfView/i);
@@ -65,7 +95,13 @@ describe('Flyout component', () => {
   });
   test('select 3 episode`s checkbox. Then unselect all checkboxes. It should add class `.__outOfView`', async () => {
     const user = userEvent.setup();
-    renderWithProviders(<Flyout />);
+    renderWithProviders(
+      <>
+        <Header />
+        <Main />
+        <Flyout />
+      </>,
+    );
 
     const flyout = await screen.findByTestId('flyout-article');
     const checkboxes = await screen.findAllByTestId('episode-checkbox');
@@ -80,7 +116,13 @@ describe('Flyout component', () => {
   });
   test('When "Unselect all" button is clicked, all the selected items should be unselected and the flyout should be removed from the page', async () => {
     const user = userEvent.setup();
-    renderWithProviders(<Flyout />);
+    renderWithProviders(
+      <>
+        <Header />
+        <Main />
+        <Flyout />
+      </>,
+    );
 
     const flyout = await screen.findByTestId('flyout-article');
     const checkboxes = await screen.findAllByTestId('episode-checkbox');
@@ -93,7 +135,13 @@ describe('Flyout component', () => {
   });
   test('When user navigates to the next page, and then goes back, previously selected items should be shown', async () => {
     const user = userEvent.setup();
-    renderWithProviders(<Flyout />);
+    renderWithProviders(
+      <>
+        <Header />
+        <Main />
+        <Flyout />
+      </>,
+    );
 
     const checkboxes = await screen.findAllByTestId('episode-checkbox');
     const buttonPrevPage = await screen.findByTestId('pagination-btn-prev');

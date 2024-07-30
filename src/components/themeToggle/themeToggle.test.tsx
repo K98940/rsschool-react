@@ -1,11 +1,16 @@
+import Pages from '@/pages';
+import { Main } from '../main/main';
+import Header from '../header/header';
 import { setupServer } from 'msw/node';
-import { ThemeToggle } from './themeToggle';
+import { Flyout } from '../flyout/flyout';
+import mockRouter from 'next-router-mock';
 import { Themes } from '@/context/themeContext';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/mocks/utils/utils';
 import { handlers as detailsHandlers } from '@mocks/handlers/details';
 import { handlers as episodesHandlers } from '@mocks/handlers/episodes';
+import { afterAll, afterEach, beforeAll, describe, expect, test, vitest } from 'vitest';
 
 const handlers = [...detailsHandlers, ...episodesHandlers];
 const server = setupServer(...handlers);
@@ -15,10 +20,18 @@ const dark: Themes = 'dark';
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
+vitest.mock('next/router', () => require('next-router-mock'));
 
 describe('ThemeToggle component', () => {
   test('Should render button for theme selection', async () => {
-    renderWithProviders(<ThemeToggle />);
+    mockRouter.push('/');
+    renderWithProviders(
+      <>
+        <Header />
+        <Main />
+        <Flyout />
+      </>,
+    );
 
     const buttonThemeToggle = await screen.findByTestId('button-theme-toggle');
     const AppHeader = await screen.findByTestId('app-header');
@@ -30,7 +43,13 @@ describe('ThemeToggle component', () => {
   });
   test('Click on the button should select `dark` theme and next click switch to `light`', async () => {
     const user = userEvent.setup();
-    renderWithProviders(<ThemeToggle />);
+    renderWithProviders(
+      <>
+        <Header />
+        <Pages />
+        <Flyout />
+      </>,
+    );
 
     const buttonThemeToggle = await screen.findByTestId('button-theme-toggle');
     const AppHeader = await screen.findByTestId('app-header');

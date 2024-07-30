@@ -1,10 +1,10 @@
-import App from '@/App';
 import { ReactElement } from 'react';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from '@/context/themeContextProvider';
 import { AppStore, RootState, setupStore } from '@/store/store';
 import { render, RenderOptions } from '@testing-library/react';
 import ErrorBoundary from '@/components/errorBoundary/errorBoundary';
+import { MemoryRouterProvider } from 'next-router-mock/MemoryRouterProvider';
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
   preloadedState?: Partial<RootState>;
@@ -16,13 +16,13 @@ export const renderWithProviders = (ui: ReactElement, extendedRenderOptions: Ext
 
   const Wrapper = () => {
     return (
-      <ErrorBoundary>
-        <ThemeProvider>
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </ThemeProvider>
-      </ErrorBoundary>
+      <MemoryRouterProvider>
+        <ErrorBoundary>
+          <ThemeProvider>
+            <Provider store={store}>{ui}</Provider>
+          </ThemeProvider>
+        </ErrorBoundary>
+      </MemoryRouterProvider>
     );
   };
 

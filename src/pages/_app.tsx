@@ -3,6 +3,8 @@ import Head from 'next/head';
 import Layout from './layout';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
+import { useLoading } from '@/hooks/hooks';
+import Spinner from '@/components/spinner/spinner';
 import type { ReactElement, ReactNode } from 'react';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -15,6 +17,7 @@ type AppPropsWithLayout = AppProps & {
 
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
+  const isLoading = useLoading();
 
   return getLayout(
     <>
@@ -22,6 +25,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
       <Layout>
+        {isLoading && <Spinner />}
         <Component {...pageProps} />
       </Layout>
     </>,

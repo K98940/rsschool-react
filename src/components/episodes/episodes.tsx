@@ -1,25 +1,17 @@
-'use client';
 import classes from './episodes.module.css';
-import { selectQuery } from './episodesSlice';
+import { EpisodeBase } from '@/types/types';
 import { MouseEvent, ReactNode } from 'react';
-import { useAppSelector } from '@/hooks/hooks';
 import useGetParams from '@/hooks/useGetParams';
 import NavElement from '../navElement/navElement';
-import { useGetEpisodesQuery } from '@/api/apiSlice';
 import { Pagination } from '../pagination/pagination';
-import { isEpisodeBaseResponse } from '@/helpers/predicates';
 
 type EpisodesProps = {
+  episodes: EpisodeBase[];
   children?: ReactNode;
 };
 
-function Episodes({ children }: EpisodesProps) {
+function Episodes({ children, episodes }: EpisodesProps) {
   const { pageNumber, router } = useGetParams();
-  const query = useAppSelector(selectQuery);
-  const { data } = useGetEpisodesQuery({ query, pageNumber });
-
-  if (!isEpisodeBaseResponse(data)) return;
-  const { episodes } = data;
 
   return (
     <>

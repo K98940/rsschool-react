@@ -6,7 +6,10 @@ import { renderWithProviders } from '@/mocks/utils/utils';
 import { handlers as detailsHandlers } from '@mocks/handlers/details';
 import { handlers as episodesHandlers } from '@mocks/handlers/episodes';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest';
+import data from '../../mocks/data/episodeFullResponse0';
+import { EpisodeFullResponse } from '@/types/types';
 
+const episode = data[0] as unknown as EpisodeFullResponse;
 const handlers = [...detailsHandlers, ...episodesHandlers];
 const server = setupServer(...handlers);
 
@@ -21,7 +24,7 @@ describe('Card component', () => {
   test('should render the Details of episode', async () => {
     mockRouter.query = { pageNumber: '1', id: 'EPMA0000001002' };
 
-    renderWithProviders(<Card />);
+    renderWithProviders(<Card episode={episode.episode} />);
 
     const title = await screen.findByText(/Til Death Do Us Part/i);
     const season = await screen.findByText(/DS9 Season 7/i);

@@ -21,7 +21,7 @@ Page.getLayout = function getLayout(RedirectPage: ReactElement) {
   return (
     <>
       <Head>
-        <title>Next.js: The Pages Router</title>
+        <title>{`Next.js: The Pages Router`}</title>
       </Head>
       <Layout>{RedirectPage}</Layout>
     </>

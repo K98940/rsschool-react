@@ -2,11 +2,14 @@ import { setupServer } from 'msw/node';
 import mockRouter from 'next-router-mock';
 import Pages from '@/pages/page/[pageNumber]';
 import { screen } from '@testing-library/react';
+import { EpisodeBaseResponse } from '@/types/types';
+import data from '../../mocks/data/episodeBaseResponse0';
 import { renderWithProviders } from '@/mocks/utils/utils';
 import { handlers as detailsHandlers } from '@mocks/handlers/details';
 import { handlers as episodesHandlers } from '@mocks/handlers/episodes';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vitest } from 'vitest';
 
+const episodes = data as unknown as EpisodeBaseResponse;
 const handlers = [...detailsHandlers, ...episodesHandlers];
 const server = setupServer(...handlers);
 
@@ -20,7 +23,7 @@ describe('pageNumber component', () => {
     mockRouter.push('/');
     renderWithProviders(
       <>
-        <Pages />
+        <Pages episodes={episodes} pageNumber={1} />
       </>,
     );
 
@@ -29,8 +32,8 @@ describe('pageNumber component', () => {
     expect(await screen.findByText(/Til Death Do Us Part/i)).toBeInTheDocument();
     const checkboxes = await screen.findAllByTestId('episode-checkbox');
     expect(checkboxes.length).toBe(10);
-    const episodes = await screen.findAllByRole('link');
-    expect(episodes.length).toBe(10);
+    const episodesLinks = await screen.findAllByRole('link');
+    expect(episodesLinks.length).toBe(10);
     expect(await screen.findByTestId('pagination-container')).toBeInTheDocument();
   });
 });

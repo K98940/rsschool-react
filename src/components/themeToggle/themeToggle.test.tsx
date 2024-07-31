@@ -7,11 +7,14 @@ import mockRouter from 'next-router-mock';
 import { Themes } from '@/context/themeContext';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { EpisodeBaseResponse } from '@/types/types';
+import data from '../../mocks/data/episodeBaseResponse0';
 import { renderWithProviders } from '@/mocks/utils/utils';
 import { handlers as detailsHandlers } from '@mocks/handlers/details';
 import { handlers as episodesHandlers } from '@mocks/handlers/episodes';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vitest } from 'vitest';
 
+const episodes = data as unknown as EpisodeBaseResponse;
 const handlers = [...detailsHandlers, ...episodesHandlers];
 const server = setupServer(...handlers);
 const light: Themes = 'light';
@@ -28,7 +31,7 @@ describe('ThemeToggle component', () => {
     renderWithProviders(
       <>
         <Header />
-        <Main />
+        <Main episodes={episodes.episodes} />
         <Flyout />
       </>,
     );

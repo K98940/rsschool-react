@@ -1,17 +1,14 @@
 import classes from './card.module.css';
 import CardEmpty from '../cardEmpty/cardEmpty';
 import useGetParams from '@/hooks/useGetParams';
-import { useGetDetailsQuery } from '@/api/apiSlice';
+import { EpisodeFullResponse } from '@/types/types';
 import { isEpisodeFull } from '@/helpers/predicates';
-import EpisodeSkeleton from '../skeletones/episodesSkeleton/episodesSkeleton';
 
-export const Card = () => {
-  const { router, id, pageNumber } = useGetParams();
-  const result = useGetDetailsQuery(id);
+export const Card = (episode: EpisodeFullResponse) => {
+  const { router, pageNumber } = useGetParams();
 
-  if (result.isFetching) return <EpisodeSkeleton />;
-  if (result.data && isEpisodeFull(result.data.episode)) {
-    const details = result.data.episode;
+  if (episode && isEpisodeFull(episode.episode)) {
+    const details = episode.episode;
     return (
       <section className={classes.container}>
         <div className={classes.card}>

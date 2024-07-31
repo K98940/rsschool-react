@@ -3,12 +3,15 @@ import { Main } from '../main/main';
 import Header from '../header/header';
 import { setupServer } from 'msw/node';
 import { screen } from '@testing-library/react';
+import { EpisodeBaseResponse } from '@/types/types';
 import userEvent from '@testing-library/user-event';
+import data from '../../mocks/data/episodeBaseResponse0';
 import { renderWithProviders } from '@/mocks/utils/utils';
 import { handlers as detailsHandlers } from '@mocks/handlers/details';
 import { handlers as episodesHandlers } from '@mocks/handlers/episodes';
 import { afterAll, afterEach, beforeAll, describe, expect, test, vitest } from 'vitest';
 
+const episodes = data as unknown as EpisodeBaseResponse;
 const handlers = [...detailsHandlers, ...episodesHandlers];
 const server = setupServer(...handlers);
 
@@ -24,7 +27,7 @@ describe('Flyout component', () => {
     renderWithProviders(
       <>
         <Header />
-        <Main />
+        <Main episodes={episodes.episodes} />
         <Flyout />
       </>,
     );
@@ -43,7 +46,7 @@ describe('Flyout component', () => {
     renderWithProviders(
       <>
         <Header />
-        <Main />
+        <Main episodes={episodes.episodes} />
         <Flyout />
       </>,
     );
@@ -60,7 +63,7 @@ describe('Flyout component', () => {
     renderWithProviders(
       <>
         <Header />
-        <Main />
+        <Main episodes={episodes.episodes} />
         <Flyout />
       </>,
     );
@@ -81,7 +84,7 @@ describe('Flyout component', () => {
     renderWithProviders(
       <>
         <Header />
-        <Main />
+        <Main episodes={episodes.episodes} />
         <Flyout />
       </>,
     );
@@ -98,7 +101,7 @@ describe('Flyout component', () => {
     renderWithProviders(
       <>
         <Header />
-        <Main />
+        <Main episodes={episodes.episodes} />
         <Flyout />
       </>,
     );
@@ -119,7 +122,7 @@ describe('Flyout component', () => {
     renderWithProviders(
       <>
         <Header />
-        <Main />
+        <Main episodes={episodes.episodes} />
         <Flyout />
       </>,
     );
@@ -138,7 +141,7 @@ describe('Flyout component', () => {
     renderWithProviders(
       <>
         <Header />
-        <Main />
+        <Main episodes={episodes.episodes} />
         <Flyout />
       </>,
     );

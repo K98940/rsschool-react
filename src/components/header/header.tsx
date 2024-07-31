@@ -1,4 +1,3 @@
-'use client';
 import classes from './header.module.css';
 import useGetParams from '@/hooks/useGetParams';
 import { useGetEpisodesQuery } from '@/api/apiSlice';

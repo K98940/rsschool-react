@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Layout from './layout';
 import { useRouter } from 'next/router';
 import type { ReactElement } from 'react';
 import { isServer } from '@/helpers/isServer';
@@ -23,7 +22,7 @@ Page.getLayout = function getLayout(RedirectPage: ReactElement) {
       <Head>
         <title>{`Next.js: The Pages Router`}</title>
       </Head>
-      <Layout>{RedirectPage}</Layout>
+      {RedirectPage}
     </>
   );
 };

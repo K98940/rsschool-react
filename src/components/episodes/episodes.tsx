@@ -1,37 +1,31 @@
+import { ReactNode } from 'react';
 import classes from './episodes.module.css';
-import { EpisodeBase } from '@/types/types';
-import { MouseEvent, ReactNode } from 'react';
-import useGetParams from '@/hooks/useGetParams';
+import { getEpisodes } from '@/api/getEpisodes';
 import NavElement from '../navElement/navElement';
 import { Pagination } from '../pagination/pagination';
 
 type EpisodesProps = {
-  episodes: EpisodeBase[];
+  params: { page: string; episode: string };
   children?: ReactNode;
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
-function Episodes({ children, episodes }: EpisodesProps) {
-  const { pageNumber, router } = useGetParams();
+async function Episodes({ children, params, searchParams }: EpisodesProps) {
+  const page = params?.page || '1';
+  const episodeBaseResponse = await getEpisodes(page, searchParams);
+  if (!episodeBaseResponse) return;
 
   return (
     <>
-      <div
-        className={classes.episodeDetail}
-        data-testid="episodes"
-        onClick={(e: MouseEvent) => {
-          if (e.target instanceof HTMLElement && e.target.tagName === 'NAV') {
-            router.push(`/page/${pageNumber}`);
-          }
-        }}
-      >
+      <div className={classes.episodeDetail} data-testid="episodes">
         <nav className={classes.episodesNavigation} data-testid="episodes-nav">
           <ol className={classes.navElements}>
-            {episodes.map((episode, i) => (
-              <NavElement key={i} episode={episode} />
+            {episodeBaseResponse.episodes?.map((episode, i) => (
+              <NavElement key={i} episode={episode} searchParams={searchParams} params={params} />
             ))}
           </ol>
         </nav>
-        <Pagination />
+        <Pagination page={episodeBaseResponse.page} params={params} searchParams={searchParams} />
       </div>
 
       {children}

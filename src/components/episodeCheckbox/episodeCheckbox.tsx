@@ -1,21 +1,20 @@
-import { ChangeEvent } from 'react';
+'use client';
+import { useContext } from 'react';
 import { EpisodeBase } from '@/types/types';
 import classes from './episodeCheckbox.module.css';
-import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { addEpisode, isCheckedEpisode, removeEpisode } from '../flyout/flyoutSlice';
+import { themeContext } from '@/context/themeContext';
 
 type Props = { episode: EpisodeBase };
 
 const EpisodeCheckbox = ({ episode }: Props) => {
-  const isChecked = useAppSelector(isCheckedEpisode(episode.uid));
-  const dispatch = useAppDispatch();
+  const { favourites, addEpisode, removeEpisode } = useContext(themeContext);
+  const isChecked = Boolean(favourites?.find((favourite) => favourite.uid === episode.uid));
 
-  const handleToggle = (e: ChangeEvent<HTMLInputElement>) => {
-    e.stopPropagation();
+  const handleToggle = () => {
     if (isChecked) {
-      dispatch(removeEpisode(episode));
+      removeEpisode(episode.uid);
     } else {
-      dispatch(addEpisode(episode));
+      addEpisode(episode);
     }
   };
 
@@ -24,7 +23,7 @@ const EpisodeCheckbox = ({ episode }: Props) => {
       className={classes.checkboxInput}
       type="checkbox"
       checked={isChecked}
-      onChange={(e) => handleToggle(e)}
+      onChange={() => handleToggle()}
       data-testid="episode-checkbox"
     ></input>
   );

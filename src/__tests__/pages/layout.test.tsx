@@ -1,15 +1,19 @@
-import Layout from '@/pages/layout';
-import { screen } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
-import { renderWithProviders } from '@/mocks/utils/utils';
+import RootLayout from '@/app/layout';
+import { render, screen } from '@testing-library/react';
+import { describe, expect, test, vitest } from 'vitest';
+import CardEmpty from '@/components/cardEmpty/cardEmpty';
+
+vitest.mock(import('next/navigation'), async (importOriginal) => {
+  const mod = await importOriginal();
+  return {
+    ...mod,
+    useRouter: vitest.fn(),
+  };
+});
 
 describe('Layout component', () => {
   test('should render Layout component', async () => {
-    renderWithProviders(
-      <>
-        <Layout />
-      </>,
-    );
+    render(<RootLayout children={<CardEmpty />} />);
 
     const header = await screen.findByTestId('app-header');
     const form = await screen.findByTestId('form-search');

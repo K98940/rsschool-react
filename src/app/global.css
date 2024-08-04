@@ -1,0 +1,105 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --input-color: 0, 0, 0;
+  --background-color: 255, 255, 255;
+  --card-color: 50, 50, 50;
+  --input-color-background: 250, 250, 245;
+  --hover-color: 255, 190, 15;
+  --border-color-dark: 140, 140, 140;
+  --border-color-light: 200, 200, 200;
+  --error-color-text: rgb(255, 100, 100);
+  --error-color-backgroun: rgb(255, 240, 240);
+  --shadow-color: 0, 0, 100, 0.2;
+  --color-scroll: rgb(0, 0, 100);
+  --color-scroll-background: rgb(190, 190, 190);
+  --background-color-selection: 255, 255, 0;
+
+  --font-title: 'Noto Serif', serif;
+  --font-common: 'Roboto', sans-serif;
+
+  --color-invert-spinner: 0;
+  --border-radius-input: 8px;
+  --z-index-top: 2;
+}
+
+:root:has([data-theme='dark']) {
+  --input-color: 250, 250, 250;
+  --background-color: 60, 60, 60;
+  --card-color: 210, 210, 210;
+  --input-color-background: 90, 90, 90;
+  --hover-color: 70, 70, 70;
+  --shadow-color: 255, 255, 255, 0.2;
+  --background-color-selection: 255, 255, 180;
+  --color-invert-spinner: 1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-optical-sizing: auto;
+  font-variation-settings: 'wdth' 100;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+
+  height: 100dvh;
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+
+  scroll-behavior: smooth;
+
+  color: rgb(var(--input-color));
+  background-color: rgb(var(--background-color));
+}
+
+.button {
+  flex: 0 0 auto;
+  padding-inline: 0.5em;
+
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  user-select: none;
+
+  border-radius: var(--border-radius-input);
+  border-block-start: 2px solid rgb(var(--border-color-light));
+  border-block-end: 2px solid rgb(var(--border-color-dark));
+  border-inline-start: 2px solid rgb(var(--border-color-light));
+  border-inline-end: 2px solid rgb(var(--border-color-dark));
+}
+
+.error-section {
+  height: 100%;
+
+  color: rgb(var(--background-color-selection));
+  text-shadow: 1px 1px 1px black;
+  background-image: url(../assets/img/broken.webp);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.error-title {
+  font-size: 2em;
+}
+.error-message {
+  font-size: 1.2em;
+  margin-block-end: 1em;
+  backdrop-filter: blur(1em);
+}
+
+.error-button {
+  padding-block: 0.5em;
+  padding-inline: 1em;
+  font-size: inherit;
+  color: black;
+}

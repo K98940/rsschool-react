@@ -1,22 +1,23 @@
+'use client';
 import classes from './header.module.css';
-import useGetParams from '@/hooks/useGetParams';
-import { useGetEpisodesQuery } from '@/api/apiSlice';
+import { makeHref } from '@/helpers/makeHref';
+import { Params, SearchParams } from '@/types/types';
 import { themeContext } from '@/context/themeContext';
 import useLocalStorage from '@/hooks/useLocalStorage';
+import { useParams, useRouter } from 'next/navigation';
 import { ThemeToggle } from '../themeToggle/themeToggle';
-import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { setQuery, selectQuery, setPage } from '../episodes/episodesSlice';
-import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 export default function Header() {
-  const { router, id } = useGetParams();
-  const dispatch = useAppDispatch();
+  const router = useRouter();
+
+  const params = useParams<Params>();
   const ref = useRef<HTMLInputElement>(null);
   const [term, setTerm] = useState('');
-  const { theme } = useContext(themeContext);
   const [localstorage, setLocalstorage] = useLocalStorage();
-  const query = useAppSelector(selectQuery);
-  const { isFetching } = useGetEpisodesQuery({ query, pageNumber: 0 });
+  const { theme } = useContext(themeContext);
+  const searchParams: SearchParams = { search: term };
+  const href = makeHref({ pageNumber: 1, params, searchParams });
 
   const handleQueryReset = (): void => {
     setTerm('');
@@ -26,24 +27,20 @@ export default function Header() {
     setTerm(e.target.value);
   };
 
-  const handleSearch = (): void => {
-    dispatch(setQuery(term));
-    dispatch(setPage(0));
+  const handleSearch = useCallback(() => {
     setLocalstorage(term);
-    const href = `/page/1${id ? '/episode/' + id : ''}`;
     router.push(href);
-  };
+  }, [term, setLocalstorage, router, href]);
 
   useEffect(() => {
-    dispatch(setQuery(localstorage));
     setTerm(localstorage);
-  }, [localstorage, dispatch]);
+  }, [localstorage]);
 
   return (
     <header className={classes.header} data-theme={theme} data-testid="app-header">
       <div className={classes.searchContainer}>
         <form
-          className={`${classes.inputContainer} ${isFetching ? classes.disabledElement : ''}`}
+          className={`${classes.inputContainer}`}
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             handleSearch();

@@ -1,49 +1,39 @@
-import Spinner from '../spinner/spinner';
+import Link from 'next/link';
 import classes from './pagination.module.css';
-import { useAppSelector } from '@/hooks/hooks';
-import useGetParams from '@/hooks/useGetParams';
-import { useGetEpisodesQuery } from '@/api/apiSlice';
-import { selectQuery } from '../episodes/episodesSlice';
-import { isEpisodeBaseResponse } from '@/helpers/predicates';
+import { makeHref } from '@/helpers/makeHref';
+import { Params, ResponsePage } from '@/types/types';
 
-const getHref = (pageNumber: number, id: string): string => `/page/${pageNumber}${id ? '/episode/' + id : ''}`;
+type PaginationProps = {
+  params: Params;
+  page: ResponsePage;
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
-export const Pagination = () => {
-  const { router, pageNumber, id } = useGetParams();
-  const query = useAppSelector(selectQuery);
-  const { isFetching, data } = useGetEpisodesQuery({ query, pageNumber });
-  if (!isEpisodeBaseResponse(data)) return;
-  const { firstPage, lastPage, totalPages } = data.page;
+export const Pagination = ({ page, params, searchParams }: PaginationProps) => {
+  const { pageNumber } = page;
 
   return (
     <div className={classes.container} data-testid="pagination-container">
-      {isFetching && <Spinner />}
       <div className={classes.pagination}>
-        <button
-          onClick={() => {
-            const href = getHref(pageNumber - 1, id);
-            router.push(href);
-          }}
+        <Link
           className={classes.arrow}
-          disabled={firstPage || isFetching}
+          data-disabled={page.firstPage}
           data-testid="pagination-btn-prev"
+          href={makeHref({ pageNumber, params, searchParams })}
         >
           ◀
-        </button>
+        </Link>
         <span className={classes.currentPage} data-testid="pagination-text-page">
-          {pageNumber} / {totalPages}
+          {page.pageNumber + 1} / {page.totalPages}
         </span>
-        <button
-          onClick={() => {
-            const href = getHref(pageNumber + 1, id);
-            router.push(href);
-          }}
+        <Link
           className={classes.arrow}
-          disabled={lastPage || isFetching}
+          data-disabled={page.lastPage}
           data-testid="pagination-btn-next"
+          href={makeHref({ pageNumber: pageNumber + 2, params, searchParams })}
         >
           ▶
-        </button>
+        </Link>
       </div>
     </div>
   );

@@ -1,11 +1,5 @@
-import { EpisodeBase, EpisodeBaseResponse, EpisodeFull, EpisodeFullResponse } from '@/types/types';
-import {
-  ResponseKeys,
-  EpisodeBaseResponseKeys,
-  EpisodeFullResponseKeys,
-  EpisodeFullKeys,
-  EpisodeBaseKeys,
-} from './constants';
+import { EpisodeBaseResponse, EpisodeFull, EpisodeFullResponse, SearchParam } from '@/types/types';
+import { ResponseKeys, EpisodeBaseResponseKeys, EpisodeFullResponseKeys, EpisodeFullKeys } from './constants';
 
 export function isResponse(data: unknown | Response): data is Response {
   if (typeof data !== 'object') return false;
@@ -23,7 +17,7 @@ export function isEpisodeFull(data: unknown | EpisodeFull): data is EpisodeFull 
   if (typeof data !== 'object') return false;
   return EpisodeFullKeys.every((key) => key in (data as EpisodeFull));
 }
-export function isEpisodeBase(data: unknown | EpisodeBase): data is EpisodeBase {
+export function isSearchParam(data: unknown | SearchParam): data is SearchParam {
   if (typeof data !== 'object') return false;
-  return EpisodeBaseKeys.every((key) => key in (data as EpisodeBase));
+  return 'search' in (data as SearchParam);
 }

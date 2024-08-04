@@ -1,8 +1,3 @@
-export type Status = 'idle' | 'submitting' | 'success' | 'failed';
-export type AppState = {
-  query: string;
-  status: Status;
-};
 export type ResponsePage = {
   pageNumber: number;
   pageSize: number;
@@ -71,3 +66,8 @@ export type Pagination = {
   firstPage: boolean;
   lastPage: boolean;
 };
+export type SearchParam = {
+  search: string;
+};
+export type Params = { page?: string; id?: string };
+export type SearchParams = { [key: string]: string };

@@ -1,12 +1,14 @@
-import { NextRouter, useRouter } from 'next/router';
+'use client';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
-type GetParams = { router: NextRouter; id: string; pageNumber: number };
+type GetParams = { router: AppRouterInstance; id: string; pageNumber: number };
 
 const useGetParams = (): GetParams => {
   const router = useRouter();
-  const { query } = router;
-  const id = typeof query.id === 'string' ? query.id : '';
-  const pageNumber = Number(typeof query.pageNumber === 'string' ? query.pageNumber : '1') || 1;
+  const searchParams = useSearchParams();
+  const id = searchParams?.get('id') || '';
+  const pageNumber = Number(searchParams?.get('pageNumber')) || 1;
   return { router, id, pageNumber };
 };
 

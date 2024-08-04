@@ -29,7 +29,9 @@
       "@context/*": ["src/context/*"],
       "@helpers/*": ["src/helpers/*"],
       "@components/*": ["src/components/*"]
-    }
+    },
+
+    "types": ["vitest/globals"]
   },
   "include": [
     "./dist/types/**/*.ts",

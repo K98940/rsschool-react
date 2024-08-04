@@ -1,14 +1,23 @@
+import Link from 'next/link';
 import classes from './card.module.css';
+import { getEpisode } from '@/api/getEpisode';
 import CardEmpty from '../cardEmpty/cardEmpty';
-import useGetParams from '@/hooks/useGetParams';
-import { EpisodeFullResponse } from '@/types/types';
-import { isEpisodeFull } from '@/helpers/predicates';
+import { isEpisodeFull, isSearchParam } from '@/helpers/predicates';
 
-export const Card = (episode: EpisodeFullResponse) => {
-  const { router, pageNumber } = useGetParams();
+type CardProps = {
+  page: string;
+  searchParams?: { [key: string]: string | string[] | undefined };
+  episodeId: string;
+};
 
-  if (episode && isEpisodeFull(episode.episode)) {
-    const details = episode.episode;
+export const Card = async ({ page, episodeId, searchParams }: CardProps) => {
+  const episodeFullResponse = await getEpisode(episodeId);
+
+  if (episodeFullResponse && isEpisodeFull(episodeFullResponse.episode)) {
+    let href = `/page/${page}`;
+    if (isSearchParam(searchParams)) href += `?search=${searchParams.search}`;
+    const details = episodeFullResponse.episode;
+
     return (
       <section className={classes.container}>
         <div className={classes.card}>
@@ -26,14 +35,9 @@ export const Card = (episode: EpisodeFullResponse) => {
               <strong>Date:</strong> {details.usAirDate}
             </p>
           </div>
-          <button
-            className={classes.btnCloseCard}
-            onClick={() => {
-              router.push(`/page/${pageNumber}`);
-            }}
-          >
+          <Link className={classes.btnCloseCard} href={href} data-testid="card-link-close">
             Close
-          </button>
+          </Link>
         </div>
       </section>
     );

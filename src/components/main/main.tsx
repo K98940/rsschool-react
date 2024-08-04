@@ -1,17 +1,19 @@
 import { memo, ReactNode } from 'react';
 import classes from './main.module.css';
-import { EpisodeBase } from '@/types/types';
 import { Episodes } from '../episodes/episodes';
 
 type MainProps = {
-  episodes: EpisodeBase[];
+  params: { page: string; episode: string };
   children?: ReactNode;
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export const Main = memo(({ children, episodes }: MainProps) => {
+export const Main = memo(({ children, params, searchParams }: MainProps) => {
   return (
     <main className={classes.main}>
-      <Episodes episodes={episodes}>{children}</Episodes>
+      <Episodes params={params} searchParams={searchParams}>
+        {children}
+      </Episodes>
     </main>
   );
 });

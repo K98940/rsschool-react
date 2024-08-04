@@ -1,6 +1,7 @@
-import { memo, ReactNode } from 'react';
 import classes from './main.module.css';
 import { Episodes } from '../episodes/episodes';
+import { memo, ReactNode, Suspense } from 'react';
+import EpisodesSkeleton from '../skeletones/episodesSkeleton/episodesSkeleton';
 
 type MainProps = {
   params: { page: string; episode: string };
@@ -11,9 +12,11 @@ type MainProps = {
 export const Main = memo(({ children, params, searchParams }: MainProps) => {
   return (
     <main className={classes.main}>
-      <Episodes params={params} searchParams={searchParams}>
-        {children}
-      </Episodes>
+      <Suspense fallback={<EpisodesSkeleton />}>
+        <Episodes params={params} searchParams={searchParams}>
+          {children}
+        </Episodes>
+      </Suspense>
     </main>
   );
 });

@@ -1,29 +1,29 @@
-import { Card } from './card';
-import { setupServer } from 'msw/node';
-import { screen } from '@testing-library/react';
-import { fireEvent } from '@testing-library/react';
-import { renderWithProviders } from '@/mocks/utils/utils';
-import { handlers as detailsHandlers } from '@mocks/handlers/details';
-import { handlers as episodesHandlers } from '@mocks/handlers/episodes';
+import { json } from '@remix-run/react';
+import { EpisodeFullResponse } from '@/types/types';
+import { createRemixStub } from '@remix-run/testing';
+import data from '../../mocks/data/episodeFullResponse0';
+import PageEpisode from '~/routes/page.$page.episode.$episode';
+import { render, screen, waitFor } from '@testing-library/react';
 
-const handlers = [...detailsHandlers, ...episodesHandlers];
-const server = setupServer(...handlers);
+const episodeFull: EpisodeFullResponse = data[0] as unknown as EpisodeFullResponse;
 
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+describe('Card component', async () => {
+  test('should render Card component with data', async () => {
+    const RemixStub = createRemixStub([
+      {
+        path: '/',
+        Component: PageEpisode,
+        loader() {
+          return json({ episodeResponse: episodeFull, params: null, search: '' });
+        },
+      },
+    ]);
 
-describe('Card component', () => {
-  test('should render the list of episodes, after click on the list items and should render detail cards', async () => {
-    renderWithProviders(<Card />);
+    render(<RemixStub />);
 
-    await screen.findByText(/Til Death Do Us Part/i);
-    fireEvent.click(screen.getByText(/Til Death Do Us Part/i));
-    expect(await screen.findByText(/Star Trek: Deep Space Nine/i)).toBeInTheDocument();
-    expect(await screen.findByText(/DS9 Season 7/i)).toBeInTheDocument();
-
-    fireEvent.click(screen.getByText(/...But to Connect/i));
-    expect(await screen.findByText(/Star Trek: Discovery/i)).toBeInTheDocument();
-    expect(await screen.findByText(/DIS Season 4/i)).toBeInTheDocument();
+    await waitFor(() => screen.findByText(/Til Death Do Us Part/i));
+    await waitFor(() => screen.findByText(/DS9 Season 7/i));
+    await waitFor(() => screen.findByText(/Star Trek: Deep Space Nine/i));
+    await waitFor(() => screen.findByText(/Close/i));
   });
 });

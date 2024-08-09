@@ -1,18 +1,17 @@
+import { useContext } from 'react';
 import classes from './flyout.module.css';
 import createCSV from '@/helpers/createCSV';
 import saveToFile from '@/helpers/saveToFile';
 import { FILE_ENDING } from '@/helpers/constants';
-import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { clearList, selectCheckedCount, selectCheckedEpisodes } from './flyoutSlice';
+import { themeContext } from '@/context/themeContext';
 
 const Flyout = () => {
-  const dispatch = useAppDispatch();
-  const countCheckedEpisodes = useAppSelector(selectCheckedCount);
-  const checkedEpisodes = useAppSelector(selectCheckedEpisodes);
+  const { favourites, clearEpisodes } = useContext(themeContext);
+  const countCheckedEpisodes = favourites.length;
 
   const handleDownloadList = () => {
-    const blob = new Blob(createCSV(checkedEpisodes), { type: 'text/plain' });
-    const fileName = `${checkedEpisodes.length || ''}${FILE_ENDING}`;
+    const blob = new Blob(createCSV(favourites), { type: 'text/plain' });
+    const fileName = `${favourites.length || ''}${FILE_ENDING}`;
     saveToFile(blob, fileName);
   };
 
@@ -27,7 +26,7 @@ const Flyout = () => {
       <div className={classes.buttonsContainer}>
         <button
           className={`button ${classes.btnFlyout}  ${classes.btnUnselectAll}`}
-          onClick={() => dispatch(clearList())}
+          onClick={() => clearEpisodes()}
           data-testid="flyout-btn-unselectall"
         ></button>
         <button

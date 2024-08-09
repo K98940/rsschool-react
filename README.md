@@ -1,6 +1,6 @@
-## React project setup. Class components. Error boundary.
+## React project. Remix Integration.
 
-https://github.com/rolling-scopes-school/tasks/blob/master/react/modules/tasks/class-components.md
+https://github.com/rolling-scopes-school/tasks/blob/master/react/modules/tasks/nextjs-ssr-ssg.md
 
 1. Clone the repository
 
@@ -14,10 +14,10 @@ git clone  https://github.com/K98940/rsschool-react.git
 cd rsschool-react
 ```
 
-3. You are in the `main` branch now. Switch into the branch `app-state-management`
+3. You are in the `main` branch now. Switch into the branch `remix-ssr`
 
 ```shell
-git switch app-state-management
+git switch remix-ssr
 ```
 
 4. Install all the required dependencies

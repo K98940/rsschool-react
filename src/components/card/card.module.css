@@ -1,5 +1,5 @@
 .container {
-  flex: 1 1 60%;
+  flex: 0 1 50%;
   height: fit-content;
   container: card / inline-size;
 }
@@ -24,11 +24,11 @@
   border-inline-end: var(--border-size) solid rgb(var(--border-color-dark));
   border-radius: var(--border-radius-input);
   box-shadow: 2px 2px 2px rgba(var(--shadow-color));
+}
 
-  & ::selection {
-    color: rgb(0, 0, 0);
-    background-color: rgb(var(--background-color-selection));
-  }
+.card ::selection {
+  color: rgb(0, 0, 0);
+  background-color: rgb(var(--background-color-selection)) !important;
 }
 
 .contentContainer {
@@ -52,6 +52,7 @@
 }
 
 .cardHeader {
+  padding-inline: 0.5em;
   font-weight: 700;
   font-family: var(--font-title);
   font-size: var(--font-size-title);
@@ -71,9 +72,10 @@
 
   font-size: 1.1em;
   font-family: inherit;
+  color: rgb(var(--input-color));
   border-radius: var(--border-radius-input);
   border: 1px solid rgb(var(--border-color-light));
-  background-color: rgb(var(--border-color-light));
+  background-color: rgb(var(--background-color));
 }
 
 @container card (width < 260px) {

@@ -1,7 +1,0 @@
-.errorPage {
-  block-size: 100%;
-  inline-size: 100%;
-  color: rgb(var(--input-color));
-  font-family: var(--font-common);
-  background-color: var(--error-color-backgroun);
-}

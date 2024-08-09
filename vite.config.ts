@@ -1,13 +1,22 @@
-/// <reference types="vitest" />
-import { defineConfig } from 'vite';
+import { vitePlugin as remix } from '@remix-run/dev';
+import { defineConfig, loadEnv } from 'vite';
 import { configDefaults } from 'vitest/config';
-import react from '@vitejs/plugin-react';
+import tsconfigPaths from 'vite-tsconfig-paths';
 import path from 'path';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   base: '/',
-  plugins: [react()],
+  plugins: [
+    !process.env.VITEST &&
+      remix({
+        future: {
+          v3_fetcherPersist: true,
+          v3_relativeSplatPath: true,
+          v3_throwAbortReason: true,
+        },
+      }),
+    tsconfigPaths(),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -22,11 +31,26 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    env: loadEnv('test', process.cwd(), ''),
     globals: true,
     setupFiles: 'setupTest.ts',
-    exclude: [...configDefaults.exclude, '**/mocks/**', '.eslintrc.cjs'],
+    exclude: [
+      ...configDefaults.exclude,
+      '**/mocks/**',
+      '.eslintrc.cjs',
+      'tailwind.config.ts',
+      'postcss.config.js',
+      '**/build/**',
+    ],
     coverage: {
-      exclude: [...configDefaults.exclude, '**/mocks/**', '.eslintrc.cjs'],
+      exclude: [
+        ...configDefaults.exclude,
+        '**/mocks/**',
+        '.eslintrc.cjs',
+        'tailwind.config.ts',
+        'postcss.config.js',
+        '**/build/**',
+      ],
     },
   },
 });

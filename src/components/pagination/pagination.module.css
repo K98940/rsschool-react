@@ -27,11 +27,15 @@
   padding-inline: var(--button-padding-inline);
   border-radius: var(--button-border-radius);
   border: 1px solid rgb(var(--border-color-light));
+  color: rgb(var(--input-color));
+  text-decoration: none;
 }
 
-.arrow:disabled {
+.arrow:disabled,
+.arrow[data-disabled='true'] {
   pointer-events: none;
   border: 1px solid rgb(var(--border-color-dark));
+  opacity: 0.5;
 }
 
 .arrow {
@@ -40,7 +44,7 @@
 
 .currentPage {
   display: inline-block;
-  background-color: var(--color-background);
+  background-color: rgb(var(--color-background));
 }
 
 @media (hover: hover) {

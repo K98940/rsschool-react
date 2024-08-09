@@ -12,7 +12,8 @@ function useLocalStorage(): T {
   }, [value]);
 
   function getValue() {
-    return localStorage.getItem(localStorageKey) || '';
+    if (typeof window !== 'undefined') return localStorage.getItem(localStorageKey) || '';
+    return '';
   }
 
   function setLocalStorage(value: string): void {

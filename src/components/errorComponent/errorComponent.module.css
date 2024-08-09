@@ -1,0 +1,5 @@
+.errorContainer {
+  flex: 1 1 auto;
+  overflow: auto;
+  background: linear-gradient(135deg, rgba(255, 116, 0, 1) 0%, rgba(255, 169, 99, 0.57) 100%);
+}

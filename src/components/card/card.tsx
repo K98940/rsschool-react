@@ -1,19 +1,18 @@
 import classes from './card.module.css';
+import { EpisodeFull } from '@/types/types';
 import CardEmpty from '../cardEmpty/cardEmpty';
-import { APP_URL_ROOT } from '@/helpers/constants';
-import { useGetDetailsQuery } from '@/api/apiSlice';
+import { useNavigate } from 'react-router-dom';
 import { isEpisodeFull } from '@/helpers/predicates';
-import { useNavigate, useParams } from 'react-router-dom';
-import EpisodeSkeleton from '../skeletones/episodesSkeleton/episodesSkeleton';
 
-export const Card = () => {
+type CardProps = {
+  episode: EpisodeFull | undefined;
+  closePath: string;
+};
+
+export const Card = ({ episode, closePath }: CardProps) => {
   const navigate = useNavigate();
-  const { episodeId } = useParams();
-  const result = useGetDetailsQuery(episodeId || '');
-
-  if (result.isFetching) return <EpisodeSkeleton />;
-  if (result.data && isEpisodeFull(result.data.episode)) {
-    const details = result.data.episode;
+  if (episode && isEpisodeFull(episode)) {
+    const details = episode;
     return (
       <section className={classes.container}>
         <div className={classes.card}>
@@ -33,8 +32,9 @@ export const Card = () => {
           </div>
           <button
             className={classes.btnCloseCard}
+            data-testid="card-button-close"
             onClick={() => {
-              navigate(APP_URL_ROOT);
+              navigate(closePath);
             }}
           >
             Close

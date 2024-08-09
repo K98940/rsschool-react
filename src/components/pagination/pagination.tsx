@@ -1,43 +1,45 @@
+import { NavLink } from '@remix-run/react';
+import { ResponsePage } from '@/types/types';
 import classes from './pagination.module.css';
-import { useGetEpisodesQuery } from '@/api/apiSlice';
-import { isEpisodeBaseResponse } from '@/helpers/predicates';
-import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { nextPage, prevPage, selectQuery, selectPageNumber } from '../episodes/episodesSlice';
 
-export const Pagination = () => {
-  const dispatch = useAppDispatch();
-  const pageNumber = useAppSelector(selectPageNumber);
-  const query = useAppSelector(selectQuery);
-  const { isFetching, data } = useGetEpisodesQuery({ query, pageNumber });
-  if (!isEpisodeBaseResponse(data)) return;
-  const { firstPage, lastPage, totalPages } = data.page;
+type PaginationProps = {
+  page: ResponsePage;
+  search: string;
+};
+
+export const Pagination = ({ page, search }: PaginationProps) => {
+  const { totalPages, pageNumber } = page;
+  const newSearch = search ? `?search=${search}` : '';
+  const nextPageNumber = pageNumber + 2;
 
   return (
     <div className={classes.container} data-testid="pagination-container">
       <div className={classes.pagination}>
-        <button
-          onClick={() => {
-            dispatch(prevPage());
+        <NavLink
+          to={{
+            pathname: `/page/${pageNumber}`,
+            search: `${newSearch}`,
           }}
           className={classes.arrow}
-          disabled={firstPage || isFetching}
-          data-testid="pagination-btn-prev"
+          data-disabled={page.firstPage}
+          data-testid="pagination-link-prevPage"
         >
           ◀
-        </button>
+        </NavLink>
         <span className={classes.currentPage} data-testid="pagination-text-page">
           {pageNumber + 1} / {totalPages}
         </span>
-        <button
-          onClick={() => {
-            dispatch(nextPage());
+        <NavLink
+          to={{
+            pathname: `/page/${nextPageNumber}`,
+            search: `${newSearch}`,
           }}
           className={classes.arrow}
-          disabled={lastPage || isFetching}
-          data-testid="pagination-btn-next"
+          data-disabled={page.lastPage}
+          data-testid="pagination-link-nextPage"
         >
           ▶
-        </button>
+        </NavLink>
       </div>
     </div>
   );

@@ -1,33 +1,24 @@
-import App from '@/App';
 import { ReactElement } from 'react';
-import { Provider } from 'react-redux';
+import { render } from '@testing-library/react';
 import { ThemeProvider } from '@/context/themeContextProvider';
-import { AppStore, RootState, setupStore } from '@/store/store';
-import { render, RenderOptions } from '@testing-library/react';
-import ErrorBoundary from '@/components/errorBoundary/errorBoundary';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
-  preloadedState?: Partial<RootState>;
-  store?: AppStore;
-}
-
-export const renderWithProviders = (ui: ReactElement, extendedRenderOptions: ExtendedRenderOptions = {}) => {
-  const { preloadedState = {}, store = setupStore(preloadedState), ...renderOptions } = extendedRenderOptions;
-
+export const renderWithProviders = (ui: ReactElement) => {
   const Wrapper = () => {
     return (
-      <ErrorBoundary>
-        <ThemeProvider>
-          <Provider store={store}>
-            <App />
-          </Provider>
-        </ThemeProvider>
-      </ErrorBoundary>
+      <ThemeProvider>
+        <MemoryRouter initialEntries={[`/page/1`]}>
+          <Routes>
+            <Route path="page" element={ui}>
+              <Route path=":id" element={ui} />
+            </Route>
+          </Routes>
+        </MemoryRouter>
+      </ThemeProvider>
     );
   };
 
   return {
-    store,
-    ...render(ui, { wrapper: Wrapper, ...renderOptions }),
+    ...render(ui, { wrapper: Wrapper }),
   };
 };

@@ -16,6 +16,7 @@ export const initialState: AppState = {
   status: 'idle',
 };
 export const APP_URL_EPISODE = 'episode/';
+export const APP_URL_START = '/page/1';
 export const APP_URL_ROOT = '/';
 export const APP_URL_ROOT_PROD = '/rsschool-react/';
 export const PAGE_SIZE = 10;
@@ -54,3 +55,5 @@ export const initialPagination: Pagination = {
   lastPage: true,
 };
 export const FILE_ENDING = '_episodes.csv';
+export const titleCommon = 'Star Trek';
+export const content = 'Star trek search episodes';

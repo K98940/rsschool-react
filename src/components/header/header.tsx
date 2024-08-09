@@ -1,23 +1,18 @@
 import classes from './header.module.css';
-import { useNavigate } from 'react-router-dom';
-import { APP_URL_ROOT } from '@/helpers/constants';
-import { useGetEpisodesQuery } from '@/api/apiSlice';
+import { APP_URL_START } from '@/helpers/constants';
 import { themeContext } from '@/context/themeContext';
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { ThemeToggle } from '../themeToggle/themeToggle';
-import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { setQuery, selectQuery, setPage } from '../episodes/episodesSlice';
+import { useNavigate, useRouteError } from '@remix-run/react';
 import { ChangeEvent, useContext, useEffect, useRef, useState } from 'react';
 
 export default function Header() {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const routeError = useRouteError();
   const ref = useRef<HTMLInputElement>(null);
   const { theme } = useContext(themeContext);
   const [localstorage, setLocalstorage] = useLocalStorage();
-  const query = useAppSelector(selectQuery);
-  const [term, setTerm] = useState(query);
-  const { isFetching } = useGetEpisodesQuery({ query, pageNumber: 0 });
+  const [term, setTerm] = useState('');
 
   const handleQueryReset = (): void => {
     setTerm('');
@@ -28,22 +23,31 @@ export default function Header() {
   };
 
   const handleSearch = (): void => {
-    dispatch(setQuery(term));
-    dispatch(setPage(0));
     setLocalstorage(term);
-    navigate(APP_URL_ROOT);
+    navigate({
+      pathname: APP_URL_START,
+      search: `?search=${term}`,
+    });
   };
 
   useEffect(() => {
-    dispatch(setQuery(localstorage));
+    if (routeError) return;
     setTerm(localstorage);
-  }, [localstorage, dispatch]);
+    navigate({
+      pathname: APP_URL_START,
+      search: `?search=${localstorage}`,
+    });
+  }, [localstorage, navigate, routeError]);
 
   return (
-    <header className={classes.header} data-theme={theme} data-testid="app-header">
+    <header
+      className={`${classes.header} ${routeError ? classes.disabledElement : ''}`}
+      data-theme={theme}
+      data-testid="app-header"
+    >
       <div className={classes.searchContainer}>
         <form
-          className={`${classes.inputContainer} ${isFetching ? classes.disabledElement : ''}`}
+          className={classes.inputContainer}
           onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             handleSearch();
@@ -58,7 +62,6 @@ export default function Header() {
             onChange={handleQueryChange}
             value={term}
             placeholder="Search for the Star Trek episode"
-            autoFocus
             ref={ref}
           ></input>
           {term.length > 0 && (

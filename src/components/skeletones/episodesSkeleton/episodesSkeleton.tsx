@@ -1,19 +1,21 @@
 import classes from './episodesSkeleton.module.css';
 
-export default function EpisodeSkeleton() {
+export default function EpisodesSkeleton() {
   return (
-    <section className={classes.container}>
-      <div className={classes.mockСard}>
-        <header className={`${classes.mockСardHeader} ${classes.animation}`} data-testid="skeleton-title">
-          Loading...
-        </header>
-        <div className={classes.mockСontentContainer}>
-          <div className={classes.mockСontent}></div>
-          <div className={classes.mockСontent}></div>
-          <div className={classes.mockСontent}></div>
-          <div className={classes.mockСontent}></div>
-        </div>
+    <section className={classes.skeleton} data-testid="skeleton-episodes">
+      <div className={classes.skeletonLfet}>
+        <div className={classes.skeletonItem}></div>
+        <div className={classes.skeletonItem}></div>
+        <div className={classes.skeletonItem}></div>
+        <div className={classes.skeletonItem}></div>
+        <div className={classes.skeletonItem}></div>
+        <div className={classes.skeletonItem}></div>
+        <div className={classes.skeletonItem}></div>
+        <div className={classes.skeletonItem}></div>
+        <div className={classes.skeletonItem}></div>
+        <div className={classes.skeletonItem}></div>
       </div>
+      <div className={classes.skeletonRight}>Select an episode...</div>
     </section>
   );
 }

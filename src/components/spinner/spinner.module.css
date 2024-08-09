@@ -1,15 +1,18 @@
 .spinner {
-  display: grid;
+  display: flex;
   position: fixed;
+  inset: 0;
   width: 100vw;
   height: 100dvh;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
 
   pointer-events: none;
   user-select: none;
 }
 
 .spinnerImg {
+  transform: translateY(-10em);
   filter: invert(var(--color-invert-spinner));
   animation-name: spinner;
   animation-duration: 2s;

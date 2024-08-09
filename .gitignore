@@ -26,3 +26,7 @@ coverage
 *.sln
 *.sw?
 Thumbs.db
+
+/.cache
+/build
+.env

@@ -1,0 +1,64 @@
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 0.25em 0.5em;
+  margin-block-end: 0.5em;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 1px 1px 3px rgba(17, 35, 175, 0.437);
+  background-color: rgba(245, 222, 179, 0.1);
+
+  & legend {
+    padding: 0 1em;
+  }
+}
+
+.error {
+  display: block;
+  height: 1.2em;
+  text-align: start;
+
+  color: red;
+  font-size: 0.9em;
+  font-weight: 700;
+  text-shadow: 1px 1px 1px white;
+  line-height: 1.2em;
+}
+
+.lineClamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+
+  hyphens: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: break-word;
+}
+
+.inputContainer {
+  display: flex;
+  width: 100%;
+  gap: 0.25em;
+  flex-wrap: nowrap;
+
+  & label {
+    flex: 1 0 50%;
+    text-align: left;
+  }
+
+  & input,
+  select {
+    flex: 1 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (hover: hover) {
+  .fieldset:hover {
+    filter: brightness(0.95);
+  }
+}

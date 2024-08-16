@@ -1,0 +1,22 @@
+.form {
+  width: clamp(var(--app-min-width), 100%, var(--form-max-width));
+  margin: 0 auto;
+  padding: 0.5em;
+  border: 4px solid rgb(51, 38, 124);
+  border-radius: 6px;
+}
+
+.submitButton {
+  background-color: rgba(63, 236, 0, 0.26);
+  margin-block: 0.5em;
+}
+
+.passwordContainer {
+  width: 50%;
+
+  & input[type='password'] {
+    min-width: 100%;
+    min-height: 1.8em;
+    margin-block-end: 2px;
+  }
+}

@@ -1,0 +1,66 @@
+.sectionUsers {
+  --row-height: 3em;
+
+  border: 4px solid rgb(51, 38, 124);
+  border-radius: 6px;
+  background-color: rgba(51, 38, 124, 0.05);
+}
+
+.containerTable {
+  height: 100%;
+}
+
+.usersTable {
+  width: 100%;
+  border-spacing: 0;
+
+  & thead,
+  tbody tr {
+    width: 100%;
+  }
+
+  & th {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  & td,
+  th {
+    margin: 0;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    overflow-wrap: break-word;
+  }
+
+  td,
+  th {
+    &:nth-child(2) {
+      max-width: 2em;
+    }
+  }
+
+  td,
+  th {
+    &:nth-child(4) {
+      max-width: 4em;
+    }
+  }
+
+  td,
+  th {
+    &:nth-child(5) {
+      max-width: 3em;
+    }
+  }
+}
+
+.usersRow_recent {
+  background-color: rgba(126, 252, 0, 0.2);
+}
+
+.userImage {
+  height: var(--row-height);
+
+  & img {
+    height: 100%;
+    object-fit: contain;
+  }
+}

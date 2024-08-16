@@ -1,0 +1,8 @@
+[
+  { "name": " ", "code": "0" },
+  { "name": "agender", "code": "1" },
+  { "name": "zerg", "code": "2" },
+  { "name": "pokemon", "code": "3" },
+  { "name": "male", "code": "4" },
+  { "name": "female", "code": "5" }
+]

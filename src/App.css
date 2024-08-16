@@ -1,0 +1,67 @@
+#root {
+  --app-max-width: 80em;
+  --form-max-width: 48em;
+  --app-min-width: 15em;
+
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 1rem;
+  text-align: center;
+}
+
+.root-navigation {
+  flex: 0 0 2em;
+  width: clamp(var(--app-min-width), 100%, var(--app-max-width));
+}
+
+.root-navigation__list {
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  list-style-type: none;
+  padding: 0.25em 0;
+}
+
+.root-navigation__item {
+  color: black;
+  font-size: 1.2em;
+  padding: 0.25em 1em;
+}
+
+.root-navigation__item_active {
+  background-color: rgba(65, 105, 225, 0.1);
+}
+
+.forms-container {
+  height: 100%;
+  width: clamp(var(--app-min-width), 100%, var(--app-max-width));
+}
+
+.forms-container:has(form[data-control='true']) {
+  background-color: rgba(0, 255, 0, 0.1);
+}
+
+#countries {
+  max-height: 100px;
+}
+
+@media (hover: hover) {
+  .clickable:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+}
+
+@media (width < 550px) {
+  .root-navigation__list {
+    gap: 1em;
+  }
+
+  .root-navigation__item {
+    font-size: 1em;
+    padding: 0.25em 0.5em;
+  }
+}
